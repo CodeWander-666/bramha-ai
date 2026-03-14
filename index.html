@@ -96,6 +96,10 @@
             flex-direction: column;
             gap: 0.5rem;
         }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+            position: relative;
+        }
         .form-group label {
             font-weight: 600;
             font-size: 0.875rem;
@@ -115,6 +119,27 @@
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        #suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        #suggestions div {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+        }
+        #suggestions div:hover {
+            background: #f7fafc;
         }
         .form-actions {
             grid-column: 1 / -1;
@@ -154,16 +179,6 @@
             background: #f7fafc;
         }
         /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 0.5rem;
-        }
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
         .loading-placeholder {
             display: none;
             padding: 2rem;
@@ -358,6 +373,11 @@
                         <label><i class="far fa-clock"></i> Time (HH:MM:SS)</label>
                         <input type="time" id="time" step="1" required value="09:10:00">
                     </div>
+                    <div class="form-group full-width">
+                        <label><i class="fas fa-search-location"></i> Location (start typing)</label>
+                        <input type="text" id="locationInput" placeholder="e.g., New York, NY" autocomplete="off">
+                        <div id="suggestions"></div>
+                    </div>
                     <div class="form-group">
                         <label><i class="fas fa-map-pin"></i> Latitude</label>
                         <input type="number" step="any" id="lat" placeholder="e.g., 28.6139" required value="18.404">
@@ -480,6 +500,10 @@
             const shareLinkInput = document.getElementById('shareLinkInput');
             const copyLinkBtn = document.getElementById('copyLinkBtn');
             const toast = document.getElementById('toast');
+            const locationInput = document.getElementById('locationInput');
+            const suggestionsDiv = document.getElementById('suggestions');
+            const latInput = document.getElementById('lat');
+            const lonInput = document.getElementById('lon');
 
             // Tabs
             const tabs = document.querySelectorAll('.tab');
@@ -527,6 +551,54 @@
                 }
             }
             checkHealth();
+
+            // --- Location Autocomplete ---
+            let debounceTimer;
+            locationInput.addEventListener('input', function() {
+                clearTimeout(debounceTimer);
+                const query = this.value.trim();
+                if (query.length < 3) {
+                    suggestionsDiv.style.display = 'none';
+                    return;
+                }
+                debounceTimer = setTimeout(() => {
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length === 0) {
+                                suggestionsDiv.style.display = 'none';
+                                return;
+                            }
+                            suggestionsDiv.innerHTML = data.map(place => 
+                                `<div data-lat="${place.lat}" data-lon="${place.lon}" data-display="${place.display_name}">${place.display_name}</div>`
+                            ).join('');
+                            suggestionsDiv.style.display = 'block';
+                        })
+                        .catch(err => {
+                            console.warn('Nominatim error:', err);
+                            suggestionsDiv.style.display = 'none';
+                        });
+                }, 500);
+            });
+
+            suggestionsDiv.addEventListener('click', (e) => {
+                const target = e.target.closest('div');
+                if (!target) return;
+                const lat = target.dataset.lat;
+                const lon = target.dataset.lon;
+                const display = target.dataset.display;
+                latInput.value = parseFloat(lat).toFixed(4);
+                lonInput.value = parseFloat(lon).toFixed(4);
+                locationInput.value = display;
+                suggestionsDiv.style.display = 'none';
+            });
+
+            // Hide suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!locationInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                    suggestionsDiv.style.display = 'none';
+                }
+            });
 
             // --- Render Functions ---
             function renderPlanets(planets) {
@@ -738,8 +810,6 @@
                     if (urlParams.has('lat')) document.getElementById('lat').value = urlParams.get('lat');
                     if (urlParams.has('lon')) document.getElementById('lon').value = urlParams.get('lon');
                     if (urlParams.has('tz')) document.getElementById('tz').value = urlParams.get('tz');
-                    // Optionally auto-submit
-                    // form.dispatchEvent(new Event('submit'));
                 }
             })();
         })();

@@ -1,1 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kundali Analyzer (jyotishganit)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #f8f9fa;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 20px auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+        .api-status {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .api-status.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .api-status .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #2e7d32;
+            display: inline-block;
+        }
+        .api-status.error .dot {
+            background: #c62828;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        label {
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.9rem;
+        }
+        input {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border 0.2s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #9b59b6;
+        }
+        button {
+            grid-column: span 2;
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #8e44ad;
+        }
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #9b59b6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .section {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-left: 5px solid #9b59b6;
+            padding-left: 15px;
+        }
+        .section h3 {
+            color: #34495e;
+            margin: 15px 0 10px;
+            font-size: 1.2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th {
+            background: #9b59b6;
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .panchanga-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        .panchanga-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .panchanga-item .label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .panchanga-item .value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 5px;
+        }
+        .raw-json {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+        details {
+            margin-top: 20px;
+        }
+        summary {
+            cursor: pointer;
+            color: #9b59b6;
+            font-weight: 600;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 600px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            button {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Kundali Analyzer</h1>
+        <div class="subtitle">Vedic astrology using jyotishganit (NASA JPL Ephemeris)</div>
 
+        <!-- API Status Indicator -->
+        <div id="apiStatus" class="api-status">
+            <span class="dot"></span> Checking API connection...
+        </div>
+
+        <!-- Birth Details Form -->
+        <form id="birthForm">
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" required value="1996-07-04">
+            </div>
+            <div class="form-group">
+                <label for="time">Time of Birth (HH:MM:SS)</label>
+                <input type="time" id="time" step="1" required value="09:10:00">
+            </div>
+            <div class="form-group">
+                <label for="lat">Latitude</label>
+                <input type="number" step="any" id="lat" placeholder="e.g., 28.6139" required value="18.404">
+            </div>
+            <div class="form-group">
+                <label for="lon">Longitude</label>
+                <input type="number" step="any" id="lon" placeholder="e.g., 77.2090" required value="75.195">
+            </div>
+            <div class="form-group full-width">
+                <label for="tz">Timezone offset (hours from UTC)</label>
+                <input type="number" step="any" id="tz" placeholder="e.g., 5.5 for IST" required value="5.5">
+            </div>
+            <button type="submit" id="submitBtn">Get Kundali</button>
+        </form>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            Calculating your birth chart...
+        </div>
+
+        <!-- Error Display -->
+        <div id="errorDisplay" class="error-message" style="display: none;"></div>
+
+        <!-- Results Area -->
+        <div id="resultsArea" class="results" style="display: none;"></div>
+
+        <footer>
+            ⚡ Powered by jyotishganit · Hosted on Hugging Face
+        </footer>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = 'https://codewander-666-bramha-ai.hf.space';  // Your Hugging Face Space URL
+
+        // DOM elements
+        const apiStatusEl = document.getElementById('apiStatus');
+        const form = document.getElementById('birthForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingEl = document.getElementById('loading');
+        const errorDisplay = document.getElementById('errorDisplay');
+        const resultsArea = document.getElementById('resultsArea');
+
+        // Helper: show/hide elements
+        function setLoading(isLoading) {
+            submitBtn.disabled = isLoading;
+            loadingEl.style.display = isLoading ? 'block' : 'none';
+            resultsArea.style.display = 'none';
+            errorDisplay.style.display = 'none';
+        }
+
+        function showError(message) {
+            errorDisplay.textContent = message;
+            errorDisplay.style.display = 'block';
+            resultsArea.style.display = 'none';
+            loadingEl.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+
+        function showResults(html) {
+            resultsArea.innerHTML = html;
+            resultsArea.style.display = 'block';
+            errorDisplay.style.display = 'none';
+            loadingEl.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+
+        // Check API health on page load
+        async function checkApiHealth() {
+            try {
+                const response = await fetch(`${API_BASE}/health`, { method: 'GET' });
+                if (response.ok) {
+                    const data = await response.json();
+                    apiStatusEl.innerHTML = `<span class="dot"></span> API connected · ${data.status}`;
+                    apiStatusEl.classList.remove('error');
+                } else {
+                    throw new Error('Health check failed');
+                }
+            } catch (error) {
+                apiStatusEl.innerHTML = `<span class="dot"></span> API unreachable · will use fallback?`;
+                apiStatusEl.classList.add('error');
+                console.warn('Health check error:', error);
+                // Still allow form submission – maybe API works even if health fails
+            }
+        }
+        checkApiHealth();
+
+        // Form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Collect form data
+            const dob = document.getElementById('dob').value.split('-');
+            const time = document.getElementById('time').value.split(':');
+
+            const payload = {
+                year: parseInt(dob[0]),
+                month: parseInt(dob[1]),
+                day: parseInt(dob[2]),
+                hour: parseInt(time[0]),
+                minute: parseInt(time[1]),
+                second: time[2] ? parseInt(time[2]) : 0,
+                latitude: parseFloat(document.getElementById('lat').value),
+                longitude: parseFloat(document.getElementById('lon').value),
+                timezone: parseFloat(document.getElementById('tz').value)
+            };
+
+            // Basic validation
+            if (!payload.year || !payload.month || !payload.day || isNaN(payload.latitude) || isNaN(payload.longitude) || isNaN(payload.timezone)) {
+                showError('Please fill all fields correctly.');
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const response = await fetch(`${API_BASE}/calculate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Handle API error response
+                    const errorMsg = data.detail || `Error ${response.status}: ${response.statusText}`;
+                    throw new Error(errorMsg);
+                }
+
+                // Success – render results
+                renderResults(data);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                showError(error.message || 'Network error – please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Render the chart data into HTML
+        function renderResults(data) {
+            let html = '';
+
+            // --- D1 Chart (Rasi) ---
+            if (data.d1_chart && data.d1_chart.houses) {
+                html += `<div class="section"><h2>🏠 Rasi Chart (D1)</h2>`;
+                html += `<table><tr><th>House</th><th>Sign</th><th>Planets</th></tr>`;
+                data.d1_chart.houses.forEach((house, idx) => {
+                    const houseNum = idx + 1;
+                    const sign = house.sign || 'Unknown';
+                    // Extract planet names from occupants
+                    const planets = (house.occupants || [])
+                        .map(o => o.celestial_body || '')
+                        .filter(name => name)
+                        .join(', ') || '—';
+                    html += `<tr><td>${houseNum}</td><td>${sign}</td><td>${planets}</td></tr>`;
+                });
+                html += `</table></div>`;
+            }
+
+            // --- Panchanga ---
+            if (data.panchanga) {
+                const p = data.panchanga;
+                html += `<div class="section"><h2>📅 Panchanga</h2>`;
+                html += `<div class="panchanga-grid">`;
+                html += `<div class="panchanga-item"><div class="label">Tithi</div><div class="value">${p.tithi || '—'}</div></div>`;
+                html += `<div class="panchanga-item"><div class="label">Nakshatra</div><div class="value">${p.nakshatra || '—'}</div></div>`;
+                html += `<div class="panchanga-item"><div class="label">Yoga</div><div class="value">${p.yoga || '—'}</div></div>`;
+                html += `<div class="panchanga-item"><div class="label">Karana</div><div class="value">${p.karana || '—'}</div></div>`;
+                html += `<div class="panchanga-item"><div class="label">Vaara</div><div class="value">${p.vaara || '—'}</div></div>`;
+                html += `</div></div>`;
+            }
+
+            // --- Raw JSON toggle ---
+            html += `<details><summary>📄 View Raw JSON</summary>`;
+            html += `<pre class="raw-json">${JSON.stringify(data, null, 2)}</pre>`;
+            html += `</details>`;
+
+            showResults(html);
+        }
+    </script>
+</body>
+</html>

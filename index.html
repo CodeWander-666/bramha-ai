@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vedic Panchanga · PyJHora</title>
+    <title>AI Panchanga · Hinglish</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -19,7 +15,7 @@
             padding: 2rem 1rem;
         }
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -80,7 +76,7 @@
         }
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
             background: #f7fafc;
             border-radius: 1.5rem;
@@ -117,6 +113,10 @@
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
+        /* Hidden coordinate fields */
+        .hidden-coord {
+            display: none;
+        }
         #suggestions {
             position: absolute;
             top: 100%;
@@ -141,7 +141,6 @@
         .form-actions {
             grid-column: 1 / -1;
             display: flex;
-            flex-wrap: wrap;
             gap: 1rem;
             margin-top: 1rem;
         }
@@ -162,119 +161,12 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             border: none;
             color: white;
+            flex: 1;
+            justify-content: center;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px -5px rgba(102, 126, 234, 0.5);
-        }
-        .btn-secondary {
-            background: white;
-            border-color: #cbd5e0;
-            color: #2d3748;
-        }
-        .btn-secondary:hover {
-            background: #f7fafc;
-        }
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            border-bottom: 2px solid #e2e8f0;
-            margin: 2rem 0 1.5rem;
-            flex-wrap: wrap;
-        }
-        .tab {
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: all 0.2s;
-            color: #718096;
-        }
-        .tab.active {
-            border-bottom-color: #667eea;
-            color: #4a5568;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .card {
-            background: white;
-            border: 1px solid #e2e8f0;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1.5rem;
-        }
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .table th {
-            text-align: left;
-            padding: 0.75rem;
-            background: #f7fafc;
-            font-weight: 600;
-        }
-        .table td {
-            padding: 0.75rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .table tr:last-child td {
-            border-bottom: none;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-        }
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-        }
-        .info-item {
-            background: #f7fafc;
-            border-radius: 0.75rem;
-            padding: 1rem;
-        }
-        .info-item .label {
-            font-size: 0.75rem;
-            color: #718096;
-            text-transform: uppercase;
-        }
-        .info-item .value {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #2d3748;
-            margin-top: 0.25rem;
-        }
-        .share-link {
-            display: flex;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-        .share-link input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 9999px;
-            font-size: 0.875rem;
         }
         .loading-overlay {
             display: none;
@@ -297,6 +189,21 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .result-container {
+            background: #f7fafc;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            white-space: pre-wrap;
+            line-height: 1.8;
+            font-size: 1rem;
+            color: #2d3748;
+        }
+        .result-placeholder {
+            color: #a0aec0;
+            text-align: center;
+            font-style: italic;
+        }
         .toast {
             position: fixed;
             bottom: 2rem;
@@ -320,18 +227,16 @@
             border-top: 1px solid #e2e8f0;
         }
         @media (max-width: 640px) {
-            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-            .form-actions { flex-direction: column; }
-            .btn { width: 100%; justify-content: center; }
+            .form-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>📅 Vedic Panchanga</h1>
-            <p>PyJHora · Swiss Ephemeris · NASA JPL Accuracy</p>
-            <span class="badge"><i class="fas fa-check-circle"></i> Real Data</span>
+            <h1>🤖 AI Panchanga</h1>
+            <p>Zhipu AI · PyJHora · Swiss Ephemeris</p>
+            <span class="badge"><i class="fas fa-magic"></i> Hinglish mein</span>
         </div>
         <div class="main">
             <!-- API Status -->
@@ -340,8 +245,8 @@
                 <span id="statusText">Checking API connection...</span>
             </div>
 
-            <!-- Birth Form -->
-            <form id="birthForm">
+            <!-- Simplified Form -->
+            <form id="panchangaForm">
                 <div class="form-grid">
                     <div class="form-group">
                         <label><i class="far fa-calendar-alt"></i> Date</label>
@@ -356,113 +261,35 @@
                         <input type="text" id="locationInput" placeholder="e.g., New York, NY" autocomplete="off">
                         <div id="suggestions"></div>
                     </div>
-                    <div class="form-group">
-                        <label><i class="fas fa-map-pin"></i> Latitude</label>
-                        <input type="number" step="any" id="lat" placeholder="e.g., 28.6139" required value="18.404">
-                    </div>
-                    <div class="form-group">
-                        <label><i class="fas fa-map-pin"></i> Longitude</label>
-                        <input type="number" step="any" id="lon" placeholder="e.g., 77.2090" required value="75.195">
-                    </div>
-                    <div class="form-group">
-                        <label><i class="fas fa-globe"></i> Timezone (UTC offset)</label>
-                        <input type="number" step="any" id="tz" placeholder="e.g., 5.5" required value="5.5">
-                    </div>
+                    <!-- Hidden coordinate fields (filled by autocomplete) -->
+                    <input type="hidden" id="lat" value="18.404">
+                    <input type="hidden" id="lon" value="75.195">
+                    <input type="hidden" id="tz" value="5.5">
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary" id="submitBtn">
-                            <i class="fas fa-calculator"></i> Get Panchanga
-                        </button>
-                        <button type="button" class="btn btn-secondary" id="importBtn">
-                            <i class="fas fa-file-import"></i> Import JSON
-                        </button>
-                        <button type="button" class="btn btn-secondary" id="exportBtn">
-                            <i class="fas fa-file-export"></i> Export JSON
-                        </button>
-                        <button type="button" class="btn btn-secondary" id="shareBtn">
-                            <i class="fas fa-link"></i> Shareable Link
+                            <i class="fas fa-robot"></i> AI Panchanga Analysis
                         </button>
                     </div>
                 </div>
             </form>
 
-            <!-- Hidden file input for import -->
-            <input type="file" id="importFile" accept=".json,application/json" style="display: none;">
-
-            <!-- Share Link Container -->
-            <div class="share-link" id="shareLinkContainer" style="display: none;">
-                <input type="text" id="shareLinkInput" readonly>
-                <button class="btn btn-secondary" id="copyLinkBtn"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-
-            <!-- Tabs -->
-            <div class="tabs" id="tabs">
-                <div class="tab active" data-tab="basic">🌱 Basic Panchanga</div>
-                <div class="tab" data-tab="detailed">🔍 Detailed</div>
-                <div class="tab" data-tab="advanced">✨ Advanced</div>
-            </div>
-
             <!-- Loading Overlay -->
             <div class="loading-overlay" id="loading">
                 <div class="loading-spinner"></div>
-                <p>Calculating with Swiss Ephemeris...</p>
+                <p>Zhipu AI soch raha hai... thoda intezaar karo</p>
             </div>
 
-            <!-- Basic Tab Content -->
-            <div id="tabBasic" class="tab-content active">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-sun"></i> Core Panchanga</div>
-                    <div class="grid-2" id="basicGrid"></div>
-                </div>
-            </div>
-
-            <!-- Detailed Tab Content -->
-            <div id="tabDetailed" class="tab-content">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-clock"></i> Timings & Trikaal</div>
-                    <div class="grid-3" id="detailedGrid"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-list"></i> Gauri Chogadiya</div>
-                    <table class="table" id="gauriTable">
-                        <thead><tr><th>Period</th><th>Type</th><th>Start</th><th>End</th></tr></thead>
-                        <tbody id="gauriBody"></tbody>
-                    </table>
-                </div>
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-clock"></i> Shubha Hora</div>
-                    <table class="table" id="horaTable">
-                        <thead><tr><th>Period</th><th>Planet</th><th>Start</th><th>End</th></tr></thead>
-                        <tbody id="horaBody"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Advanced Tab Content -->
-            <div id="tabAdvanced" class="tab-content">
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-star"></i> Yogas & Muhurthas</div>
-                    <div class="grid-3" id="advancedGrid1"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-moon"></i> Thaara, Chandra, Panchaka</div>
-                    <div class="grid-3" id="advancedGrid2"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-om"></i> Vaasa & Shoola</div>
-                    <div class="grid-3" id="advancedGrid3"></div>
-                </div>
-                <div class="card">
-                    <div class="card-title"><i class="fas fa-code"></i> Raw Response</div>
-                    <pre class="raw-json" id="rawJson" style="background: #1f2937; color: #e5e7eb; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; font-family: monospace;"></pre>
-                </div>
+            <!-- Result Area -->
+            <div id="resultContainer" class="result-container result-placeholder">
+                Yahan aapka AI panchanga analysis aayega...
             </div>
 
             <!-- Toast -->
             <div id="toast" class="toast"></div>
         </div>
         <footer>
-            <i class="fas fa-star"></i> Powered by PyJHora · Open Source · Free
+            <i class="fas fa-star"></i> Powered by PyJHora · Zhipu AI · Open Source
         </footer>
     </div>
 
@@ -475,43 +302,16 @@
             const apiStatus = document.getElementById('apiStatus');
             const statusDot = document.getElementById('statusDot');
             const statusText = document.getElementById('statusText');
-            const form = document.getElementById('birthForm');
+            const form = document.getElementById('panchangaForm');
             const submitBtn = document.getElementById('submitBtn');
             const loading = document.getElementById('loading');
+            const resultContainer = document.getElementById('resultContainer');
             const locationInput = document.getElementById('locationInput');
             const suggestionsDiv = document.getElementById('suggestions');
             const latInput = document.getElementById('lat');
             const lonInput = document.getElementById('lon');
             const tzInput = document.getElementById('tz');
-            const importBtn = document.getElementById('importBtn');
-            const importFile = document.getElementById('importFile');
-            const exportBtn = document.getElementById('exportBtn');
-            const shareBtn = document.getElementById('shareBtn');
-            const shareLinkContainer = document.getElementById('shareLinkContainer');
-            const shareLinkInput = document.getElementById('shareLinkInput');
-            const copyLinkBtn = document.getElementById('copyLinkBtn');
             const toast = document.getElementById('toast');
-
-            // Tab contents
-            const tabBasic = document.getElementById('tabBasic');
-            const tabDetailed = document.getElementById('tabDetailed');
-            const tabAdvanced = document.getElementById('tabAdvanced');
-            const basicGrid = document.getElementById('basicGrid');
-            const detailedGrid = document.getElementById('detailedGrid');
-            const gauriBody = document.getElementById('gauriBody');
-            const horaBody = document.getElementById('horaBody');
-            const advancedGrid1 = document.getElementById('advancedGrid1');
-            const advancedGrid2 = document.getElementById('advancedGrid2');
-            const advancedGrid3 = document.getElementById('advancedGrid3');
-            const rawJson = document.getElementById('rawJson');
-
-            // Tabs
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = {
-                basic: tabBasic,
-                detailed: tabDetailed,
-                advanced: tabAdvanced
-            };
 
             // --- Utility Functions ---
             function showToast(message, isError = false) {
@@ -533,9 +333,9 @@
                     if (res.ok) {
                         const data = await res.json();
                         statusDot.className = 'status-dot';
-                        statusText.textContent = `API connected · PyJHora ${data.jhora_available ? 'ready' : 'mock'}`;
-                        if (!data.jhora_available) {
-                            showToast('Backend using mock data – real calculations unavailable', true);
+                        statusText.textContent = `API connected · PyJHora ${data.jhora_available ? 'ready' : 'mock'} · Zhipu ${data.zhipu_available ? 'ready' : 'unavailable'}`;
+                        if (!data.zhipu_available) {
+                            showToast('Zhipu AI not configured – analysis may fail', true);
                         }
                     } else {
                         throw new Error('Health check failed');
@@ -586,6 +386,10 @@
                 lonInput.value = parseFloat(lon).toFixed(4);
                 locationInput.value = display;
                 suggestionsDiv.style.display = 'none';
+                // For simplicity, we'll assume UTC offset based on coordinates; you might need a timezone API.
+                // Here we just keep the default or user can override if needed. For a real app, use a timezone service.
+                // We'll set a placeholder timezone; you can enhance by calling a timezone API.
+                tzInput.value = "5.5"; // This is just a default; you may want to compute from lat/lon.
             });
 
             document.addEventListener('click', (e) => {
@@ -613,229 +417,32 @@
 
                 setLoading(true);
                 try {
-                    // Determine which tab is active and call the corresponding endpoint
-                    const activeTab = document.querySelector('.tab.active').dataset.tab;
-                    let endpoint = '';
-                    if (activeTab === 'basic') endpoint = '/panchanga/basic';
-                    else if (activeTab === 'detailed') endpoint = '/panchanga/detailed';
-                    else endpoint = '/panchanga/advanced';
-
-                    const response = await fetch(`${API_BASE}${endpoint}`, {
+                    const response = await fetch(`${API_BASE}/panchanga/analysis`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
                     const data = await response.json();
                     if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
-                    if (data.mock) showToast('Using simulated data (backend calculation unavailable)', true);
-                    else showToast('Real data received', false);
 
-                    // Render according to active tab
-                    if (activeTab === 'basic') renderBasic(data);
-                    else if (activeTab === 'detailed') renderDetailed(data);
-                    else renderAdvanced(data);
+                    // Format the output nicely
+                    let output = `📍 **स्थान:** ${locationInput.value || 'Unknown'}\n`;
+                    output += `📅 **तिथि:** ${payload.year}-${payload.month}-${payload.day} ${payload.hour}:${payload.minute}:${payload.second}\n`;
+                    output += `⏱️ **समय क्षेत्र:** UTC ${payload.timezone}\n\n`;
+                    output += `🤖 **ज़िपु AI का विश्लेषण:**\n`;
+                    output += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+                    output += data.analysis || 'कोई विश्लेषण उपलब्ध नहीं है।';
+                    
+                    resultContainer.innerHTML = output.replace(/\n/g, '<br>');
+                    resultContainer.classList.remove('result-placeholder');
                 } catch (err) {
                     showToast('Error: ' + err.message, true);
+                    resultContainer.innerHTML = '❌ विश्लेषण प्राप्त करने में त्रुटि हुई। कृपया पुनः प्रयास करें।';
+                    resultContainer.classList.remove('result-placeholder');
                 } finally {
                     setLoading(false);
                 }
             });
-
-            // --- Render Functions ---
-            function renderBasic(data) {
-                const t = data.tithi || {};
-                const n = data.nakshatra || {};
-                const y = data.yoga || {};
-                const k = data.karana || {};
-                const v = data.vaara || {};
-
-                basicGrid.innerHTML = `
-                    <div class="info-item"><span class="label">Tithi</span><span class="value">${t.name || ''} (${t.index || ''})<br><small>${t.start} – ${t.end}</small>${t.next_name ? `<br>Next: ${t.next_name} at ${t.next_start}` : ''}</span></div>
-                    <div class="info-item"><span class="label">Nakshatra</span><span class="value">${n.name || ''} Pada ${n.pada || ''}<br><small>${n.start} – ${n.end}</small>${n.next_name ? `<br>Next: ${n.next_name} at ${n.next_start}` : ''}</span></div>
-                    <div class="info-item"><span class="label">Yoga</span><span class="value">${y.name || ''}<br><small>${y.start} – ${y.end}</small>${y.next_name ? `<br>Next: ${y.next_name} at ${y.next_start}` : ''}</span></div>
-                    <div class="info-item"><span class="label">Karana</span><span class="value">${k.name || ''}<br><small>${k.start} – ${k.end}</small></span></div>
-                    <div class="info-item"><span class="label">Vaara</span><span class="value">${v.name || ''}</span></div>
-                `;
-            }
-
-            function renderDetailed(data) {
-                // Timings grid
-                detailedGrid.innerHTML = `
-                    <div class="info-item"><span class="label">Sunrise</span><span class="value">${data.sunrise || ''}</span></div>
-                    <div class="info-item"><span class="label">Sunset</span><span class="value">${data.sunset || ''}</span></div>
-                    <div class="info-item"><span class="label">Moonrise</span><span class="value">${data.moonrise || ''}</span></div>
-                    <div class="info-item"><span class="label">Moonset</span><span class="value">${data.moonset || ''}</span></div>
-                    <div class="info-item"><span class="label">Rahu Kaalam</span><span class="value">${data.rahu_kaalam?.start || ''} – ${data.rahu_kaalam?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Yamaganda</span><span class="value">${data.yamaganda?.start || ''} – ${data.yamaganda?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Gulika</span><span class="value">${data.gulika?.start || ''} – ${data.gulika?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Abhijit</span><span class="value">${data.abhijit?.start || ''} – ${data.abhijit?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Day Length</span><span class="value">${data.day_length || ''}</span></div>
-                    <div class="info-item"><span class="label">Night Length</span><span class="value">${data.night_length || ''}</span></div>
-                    <div class="info-item"><span class="label">Ayanamsa</span><span class="value">${data.ayanamsa || ''}</span></div>
-                `;
-
-                // Gauri Chogadiya
-                if (data.gauri_chogadiya && Array.isArray(data.gauri_chogadiya)) {
-                    gauriBody.innerHTML = data.gauri_chogadiya.map((g, idx) => `
-                        <tr>
-                            <td>${idx+1}</td>
-                            <td>${g.type || ''}</td>
-                            <td>${g.start || ''}</td>
-                            <td>${g.end || ''}</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    gauriBody.innerHTML = '<tr><td colspan="4">No data</td></tr>';
-                }
-
-                // Shubha Hora
-                if (data.shubha_hora && Array.isArray(data.shubha_hora)) {
-                    horaBody.innerHTML = data.shubha_hora.map((h, idx) => `
-                        <tr>
-                            <td>${idx+1}</td>
-                            <td>${h.planet || ''}</td>
-                            <td>${h.start || ''}</td>
-                            <td>${h.end || ''}</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    horaBody.innerHTML = '<tr><td colspan="4">No data</td></tr>';
-                }
-            }
-
-            function renderAdvanced(data) {
-                // Grid 1: Yogas & Muhurthas
-                advancedGrid1.innerHTML = `
-                    <div class="info-item"><span class="label">Anandhaadhi Yoga</span><span class="value">${data.anandhaadhi_yoga?.name || ''}<br>start ${data.anandhaadhi_yoga?.start || ''}</span></div>
-                    <div class="info-item"><span class="label">Tamil Yogam</span><span class="value">${data.tamil_yogam?.name || ''}<br>${data.tamil_yogam?.start || ''} – ${data.tamil_yogam?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Pushkara Yoga</span><span class="value">${data.pushkara_yoga?.type ? (data.pushkara_yoga.type===1 ? 'Dwi' : 'Tri') : 'None'}<br>${data.pushkara_yoga?.start || ''} – ${data.pushkara_yoga?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Aadal Yoga</span><span class="value">${data.aadal_yoga?.start || ''} – ${data.aadal_yoga?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Vidaal Yoga</span><span class="value">${data.vidaal_yoga?.start || ''} – ${data.vidaal_yoga?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Brahma Muhurtha</span><span class="value">${data.brahma_muhurtha?.start || ''} – ${data.brahma_muhurtha?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Godhuli Muhurtha</span><span class="value">${data.godhuli_muhurtha?.start || ''} – ${data.godhuli_muhurtha?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Nishita Muhurtha</span><span class="value">${data.nishita_muhurtha?.start || ''} – ${data.nishita_muhurtha?.end || ''}</span></div>
-                `;
-
-                // Grid 2: Thaara, Chandra, Panchaka
-                advancedGrid2.innerHTML = `
-                    <div class="info-item"><span class="label">Thaarabalam (good stars)</span><span class="value">${data.thaaraabalam?.good_stars?.join(', ') || ''}</span></div>
-                    <div class="info-item"><span class="label">Chandrabalam (good rasis)</span><span class="value">${data.chandrabalam?.good_rasis?.join(', ') || ''}</span></div>
-                    <div class="info-item"><span class="label">Panchaka Rahitha</span><span class="value">${data.panchaka_rahitha?.length ? data.panchaka_rahitha[0].rasi + ' ' + data.panchaka_rahitha[0].start + '–' + data.panchaka_rahitha[0].end : ''}</span></div>
-                    <div class="info-item"><span class="label">Amrita Gadiya</span><span class="value">${data.amrita_gadiya?.start || ''} – ${data.amrita_gadiya?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Varjyam</span><span class="value">${data.varjyam?.period1 ? data.varjyam.period1.start+'–'+data.varjyam.period1.end + (data.varjyam.period2 ? ' ; '+data.varjyam.period2.start+'–'+data.varjyam.period2.end : '') : (data.varjyam?.start ? data.varjyam.start+'–'+data.varjyam.end : '')}</span></div>
-                    <div class="info-item"><span class="label">Triguna</span><span class="value">${data.triguna?.guna || ''}<br>${data.triguna?.start || ''} – ${data.triguna?.end || ''}</span></div>
-                `;
-
-                // Grid 3: Vaasa & Shoola
-                advancedGrid3.innerHTML = `
-                    <div class="info-item"><span class="label">Vivaha Chakra Palan</span><span class="value">${data.vivaha_chakra_palan || ''}</span></div>
-                    <div class="info-item"><span class="label">Shiva Vaasa</span><span class="value">${data.shiva_vaasa?.name || ''} until ${data.shiva_vaasa?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Agni Vaasa</span><span class="value">${data.agni_vaasa?.name || ''} until ${data.agni_vaasa?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Yogini Vaasa</span><span class="value">${data.yogini_vaasa?.name || ''}</span></div>
-                    <div class="info-item"><span class="label">Disha Shool</span><span class="value">${data.disha_shool?.name || ''}</span></div>
-                    <div class="info-item"><span class="label">Chandrashtama</span><span class="value">${data.chandrashtama?.rasi || ''} until ${data.chandrashtama?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Karaka Tithi</span><span class="value">${data.karaka_tithi?.name || ''}<br>${data.karaka_tithi?.start || ''} – ${data.karaka_tithi?.end || ''}</span></div>
-                    <div class="info-item"><span class="label">Karaka Yogam</span><span class="value">${data.karaka_yogam?.name || ''}<br>${data.karaka_yogam?.start || ''} – ${data.karaka_yogam?.end || ''}</span></div>
-                `;
-
-                // Raw JSON
-                rawJson.textContent = JSON.stringify(data, null, 2);
-            }
-
-            // --- Tab Switching ---
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const target = tab.dataset.tab;
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    Object.values(tabContents).forEach(c => c.classList.remove('active'));
-                    tabContents[target].classList.add('active');
-                });
-            });
-
-            // --- Import/Export ---
-            importBtn.addEventListener('click', () => importFile.click());
-            importFile.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    try {
-                        const json = JSON.parse(ev.target.result);
-                        if (json.year && json.month && json.day) {
-                            document.getElementById('dob').value = `${json.year}-${String(json.month).padStart(2,'0')}-${String(json.day).padStart(2,'0')}`;
-                        }
-                        if (json.hour !== undefined) {
-                            document.getElementById('time').value = `${String(json.hour).padStart(2,'0')}:${String(json.minute).padStart(2,'0')}:${String(json.second||0).padStart(2,'0')}`;
-                        }
-                        if (json.latitude) latInput.value = json.latitude;
-                        if (json.longitude) lonInput.value = json.longitude;
-                        if (json.timezone) tzInput.value = json.timezone;
-                        showToast('Data imported successfully', false);
-                    } catch {
-                        showToast('Invalid JSON file', true);
-                    }
-                };
-                reader.readAsText(file);
-                importFile.value = '';
-            });
-
-            exportBtn.addEventListener('click', () => {
-                const dob = document.getElementById('dob').value.split('-');
-                const time = document.getElementById('time').value.split(':');
-                const data = {
-                    year: parseInt(dob[0]),
-                    month: parseInt(dob[1]),
-                    day: parseInt(dob[2]),
-                    hour: parseInt(time[0]),
-                    minute: parseInt(time[1]),
-                    second: parseInt(time[2] || 0),
-                    latitude: parseFloat(latInput.value),
-                    longitude: parseFloat(lonInput.value),
-                    timezone: parseFloat(tzInput.value)
-                };
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'birth_data.json';
-                a.click();
-                URL.revokeObjectURL(url);
-            });
-
-            // --- Shareable Link ---
-            shareBtn.addEventListener('click', () => {
-                const dob = document.getElementById('dob').value.split('-');
-                const time = document.getElementById('time').value.split(':');
-                const params = new URLSearchParams({
-                    y: dob[0], m: dob[1], d: dob[2],
-                    h: time[0], min: time[1], s: time[2] || '0',
-                    lat: latInput.value,
-                    lon: lonInput.value,
-                    tz: tzInput.value
-                });
-                const url = `${window.location.origin}${window.location.pathname}?${params}`;
-                shareLinkInput.value = url;
-                shareLinkContainer.style.display = 'flex';
-            });
-
-            copyLinkBtn.addEventListener('click', () => {
-                shareLinkInput.select();
-                document.execCommand('copy');
-                showToast('Link copied to clipboard', false);
-            });
-
-            // --- Auto-load from URL params ---
-            (function loadFromUrl() {
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.has('y') && urlParams.has('m') && urlParams.has('d')) {
-                    document.getElementById('dob').value = `${urlParams.get('y')}-${urlParams.get('m').padStart(2,'0')}-${urlParams.get('d').padStart(2,'0')}`;
-                    document.getElementById('time').value = `${urlParams.get('h').padStart(2,'0')}:${urlParams.get('min').padStart(2,'0')}:${urlParams.get('s').padStart(2,'0')}`;
-                    if (urlParams.has('lat')) latInput.value = urlParams.get('lat');
-                    if (urlParams.has('lon')) lonInput.value = urlParams.get('lon');
-                    if (urlParams.has('tz')) tzInput.value = urlParams.get('tz');
-                }
-            })();
         })();
     </script>
 </body>

@@ -647,7 +647,7 @@
             filter: brightness(1.1);
         }
 
-        /* Dummy image placeholders */
+        /* Dummy image placeholders (no longer used but kept for reference) */
         .dummy-img {
             background: rgba(42, 30, 60, 0.8);
             border-radius: 1rem;
@@ -692,11 +692,14 @@
             .hero-text { flex: 1; }
             .hero-portrait { flex: 0 0 300px; }
         }
-        .hero-portrait .dummy-img {
+        .hero-portrait img {
             width: 100%;
             max-width: 300px;
             height: 400px;
             margin: 0 auto;
+            object-fit: cover;
+            border-radius: 1rem;
+            border: 4px solid var(--primary-glow);
         }
 
         /* Swiper pagination */
@@ -741,7 +744,7 @@
             .footer-social {
                 justify-content: center;
             }
-            .hero-portrait .dummy-img {
+            .hero-portrait img {
                 max-width: 250px;
                 height: 350px;
             }
@@ -785,7 +788,7 @@
 
     <!-- Fixed Header -->
     <header class="header">
-        <div class="logo"> Bramha AI</div>
+        <div class="logo">✨ Bramha AI</div>
         <div class="theme-switcher">
             <label class="theme-switch">
                 <input type="checkbox" class="theme-switch__checkbox" id="themeToggle">
@@ -872,23 +875,22 @@
         <section id="hero">
             <div class="hero-container">
                 <div class="hero-text" data-aos="fade-right">
-                    <h1 class="text-4xl md:text-6xl font-bold leading-tight text-3d" style="font-size: clamp(2.5rem, 8vw, 4rem);">Unlock Your Destiny with <span class="text-[#d4af37]">Bramha AI</span></h1>
-                    <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-2xl">India’s first AI astrologer – instant Kundli, personalized remedies, 95% accuracy.</p>
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight text-3d" style="font-size: clamp(2.5rem, 8vw, 4rem);">Unlock Your Destiny with <span class="text-[#d4af37]">Shri Acharya Nirmalanand Ji</span></h1>
+                    <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-2xl">India’s first AI astrologer – instant Kundli, personalized remedies, accuracy.</p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-10">
-                        <a href="#" class="btn-3d bg-[#d4af37] text-black font-bold py-3 px-8 rounded-full text-lg flex items-center justify-center gap-2"><i class="fas fa-moon"></i> Free Kundli</a>
+                        <a href="#" class="btn-3d bg-[#d4af37] text-black font-bold py-3 px-8 rounded-full text-lg flex items-center justify-center gap-2"><i class="fas fa-moon"></i> Accurate Kundli</a>
                         <a href="#" class="btn-3d border border-[#d4af37] text-white font-bold py-3 px-8 rounded-full text-lg flex items-center justify-center gap-2"><i class="fas fa-play"></i> Watch Demo</a>
                     </div>
-                    <!-- Video placeholder -->
+                    <!-- Video intro -->
                     <div class="mt-12 relative w-64 h-36 mx-auto lg:mx-0 rounded-xl overflow-hidden border-2 border-[#d4af37] bg-[#1a1225] flex items-center justify-center">
-                        <i class="fas fa-play-circle text-4xl text-[#d4af37]"></i>
-                        <span class="sr-only">Video intro</span>
+                        <video class="w-full h-full object-cover" poster="/images/video-poster.jpg" controls>
+                            <source src="/videos/intro.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                 </div>
                 <div class="hero-portrait" data-aos="fade-left">
-                    <img src="images/astrologer-portrait.png" alt="AI Astrologer" class="w-full max-w-xs h-96 mx-auto rounded-2xl border-4 border-[#d4af37] object-cover">
-                         alt="Astrologer"
-                         class="w-full max-w-xs h-96 mx-auto rounded-2xl border-4 border-[#d4af37] object-cover">
-                    </div>
+                    <img src="/images/astrologer-portrait.png" alt="AI Astrologer" class="w-full max-w-xs h-96 mx-auto rounded-2xl border-4 border-[#d4af37] object-cover">
                 </div>
             </div>
         </section>
@@ -897,22 +899,22 @@
         <section id="stats">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 <div data-aos="zoom-in">
-                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-calendar-alt"></i></div>
+                    <img src="/images/icon-experience.png" alt="Years of Research" class="w-16 h-16 mx-auto mb-3 object-contain">
                     <div class="text-3xl font-bold text-[#d4af37] counter" data-target="10">0</div>
                     <p>Years of Research</p>
                 </div>
                 <div data-aos="zoom-in" data-aos-delay="100">
-                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-users"></i></div>
+                    <img src="/images/icon-users.png" alt="Happy Users" class="w-16 h-16 mx-auto mb-3 object-contain">
                     <div class="text-3xl font-bold text-[#d4af37] counter" data-target="100000">0</div>
                     <p>Happy Users (UP + India)</p>
                 </div>
                 <div data-aos="zoom-in" data-aos-delay="200">
-                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-chart-line"></i></div>
+                    <img src="/images/icon-accuracy.png" alt="Prediction Accuracy" class="w-16 h-16 mx-auto mb-3 object-contain">
                     <div class="text-3xl font-bold text-[#d4af37] counter" data-target="95">0</div>
                     <p>Prediction Accuracy</p>
                 </div>
                 <div data-aos="zoom-in" data-aos-delay="300">
-                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-brain"></i></div>
+                    <img src="/images/icon-ai.png" alt="AI Algorithms" class="w-16 h-16 mx-auto mb-3 object-contain">
                     <div class="text-3xl font-bold text-[#d4af37] counter" data-target="100">0</div>
                     <p>AI Algorithms</p>
                 </div>
@@ -925,28 +927,28 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Card 1: AI Panchang -->
                 <div class="card" data-aos="flip-left" data-tilt>
-                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-calendar-alt"></i></div>
+                    <img src="/images/service-kundli.png" alt="AI Panchang" class="w-full h-40 mb-4 object-contain">
                     <h3>AI Panchang</h3>
                     <p class="text-sm text-gray-400 mt-2">Get detailed daily Panchang with AI insights. Accurate tithi, nakshatra, yoga, karana for any location.</p>
                     <a href="panchang.html" class="btn-3d">Explore Now</a>
                 </div>
                 <!-- Card 2: Daily Horoscope -->
                 <div class="card" data-aos="flip-left" data-aos-delay="100" data-tilt>
-                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-sun"></i></div>
+                    <img src="/images/service-horoscope.png" alt="Daily Horoscope" class="w-full h-40 mb-4 object-contain">
                     <h3>Daily Horoscope</h3>
                     <p class="text-sm text-gray-400 mt-2">Personalized horoscope based on your sun sign. AI-powered predictions for love, career, health.</p>
                     <a href="horoscope.html" class="btn-3d">Explore Now</a>
                 </div>
                 <!-- Card 3: Match Making -->
                 <div class="card" data-aos="flip-left" data-aos-delay="200" data-tilt>
-                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-heart"></i></div>
+                    <img src="/images/service-matchmaking.png" alt="Match Making" class="w-full h-40 mb-4 object-contain">
                     <h3>Match Making</h3>
                     <p class="text-sm text-gray-400 mt-2">Kundli Milan with AI compatibility score. 36 gunas analysis and married life predictions.</p>
                     <a href="panchang.html" class="btn-3d">Explore Now</a>
                 </div>
                 <!-- Card 4: Remedies & Gems -->
                 <div class="card" data-aos="flip-left" data-aos-delay="300" data-tilt>
-                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-gem"></i></div>
+                    <img src="/images/service-remedies.png" alt="Remedies & Gems" class="w-full h-40 mb-4 object-contain">
                     <h3>Remedies & Gems</h3>
                     <p class="text-sm text-gray-400 mt-2">AI-suggested gemstones, mantras, and yagyas based on your birth chart deficiencies.</p>
                     <a href="panchang.html" class="btn-3d">Explore Now</a>
@@ -962,44 +964,46 @@
                 <!-- Step 1 -->
                 <div class="relative z-10 text-center w-64" data-aos="fade-right">
                     <div class="bg-[#1a122f] p-5 rounded-full w-32 h-32 mx-auto border-4 border-[#d4af37] flex items-center justify-center">
-                        <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-calendar-alt"></i></div>
+                        <img src="/images/step1-input.png" alt="Enter Details" class="w-16 h-16 object-contain">
                     </div>
                     <h3 class="mt-4 text-xl font-semibold">1. Enter Details</h3>
                     <p class="text-sm text-gray-400">Birth date, time, place</p>
                     <div class="flex gap-1 mt-2 justify-center">
-                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
-                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                        <img src="/images/step1-land.jpg" alt="Step 1 example 1" class="w-10 h-10 object-cover rounded">
+                        <img src="/images/step1-port.jpg" alt="Step 1 example 2" class="w-10 h-10 object-cover rounded">
                     </div>
                 </div>
                 <!-- Step 2 -->
                 <div class="relative z-10 text-center w-64" data-aos="fade-up">
                     <div class="bg-[#1a122f] p-5 rounded-full w-32 h-32 mx-auto border-4 border-[#d4af37] flex items-center justify-center">
-                        <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-robot"></i></div>
+                        <img src="/images/step2-ai.png" alt="AI Analysis" class="w-16 h-16 object-contain">
                     </div>
                     <h3 class="mt-4 text-xl font-semibold">2. AI Analysis</h3>
                     <p class="text-sm text-gray-400">Machine learning on 10M+ charts</p>
                     <div class="flex gap-1 mt-2 justify-center">
-                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
-                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                        <img src="/images/step2-land.jpg" alt="Step 2 example 1" class="w-10 h-10 object-cover rounded">
+                        <img src="/images/step2-port.jpg" alt="Step 2 example 2" class="w-10 h-10 object-cover rounded">
                     </div>
                 </div>
                 <!-- Step 3 -->
                 <div class="relative z-10 text-center w-64" data-aos="fade-left">
                     <div class="bg-[#1a122f] p-5 rounded-full w-32 h-32 mx-auto border-4 border-[#d4af37] flex items-center justify-center">
-                        <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-file-pdf"></i></div>
+                        <img src="/images/step3-report.png" alt="Receive Report" class="w-16 h-16 object-contain">
                     </div>
                     <h3 class="mt-4 text-xl font-semibold">3. Receive Report</h3>
                     <p class="text-sm text-gray-400">Detailed PDF + remedy video</p>
                     <div class="flex gap-1 mt-2 justify-center">
-                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
-                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                        <img src="/images/step3-land.jpg" alt="Step 3 example 1" class="w-10 h-10 object-cover rounded">
+                        <img src="/images/step3-port.jpg" alt="Step 3 example 2" class="w-10 h-10 object-cover rounded">
                     </div>
                 </div>
             </div>
             <!-- Video placeholder -->
-            <div class="dummy-img w-full max-w-md mx-auto h-48 mt-16">
-                <i class="fas fa-play-circle text-5xl"></i>
-                <span class="ml-2">How it works</span>
+            <div class="w-full max-w-md mx-auto h-48 mt-16">
+                <video class="w-full h-full object-cover rounded-xl border-2 border-[#d4af37]" poster="/images/how-it-works-poster.jpg" controls>
+                    <source src="/videos/how-it-works.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
             </div>
         </section>
 
@@ -1007,16 +1011,16 @@
         <section id="ai-preview">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="flex-1" data-aos="fade-right">
-                    <div class="dummy-img w-80 h-80 mx-auto rounded-3xl border-4 border-[#d4af37]"><i class="fas fa-user-tie text-7xl"></i></div>
+                    <img src="/images/ai-guru-ji.png" alt="AI Guru" class="w-80 h-80 mx-auto rounded-3xl border-4 border-[#d4af37] object-cover">
                     <div class="flex gap-2 justify-center mt-4">
-                        <div class="dummy-img dummy-img-sm w-20 h-24"><i class="fas fa-image"></i></div>
-                        <div class="dummy-img dummy-img-sm w-32 h-24"><i class="fas fa-image"></i></div>
+                        <img src="/images/ai-guru-portrait.jpg" alt="AI Guru portrait" class="w-20 h-24 object-cover rounded-lg">
+                        <img src="/images/ai-guru-landscape.jpg" alt="AI Guru landscape" class="w-32 h-24 object-cover rounded-lg">
                     </div>
                 </div>
                 <div class="flex-1" data-aos="fade-left">
                     <div class="card p-6 rounded-3xl" style="background: rgba(20,12,30,0.8);">
                         <div class="flex items-start gap-3 mb-4">
-                            <div class="dummy-img w-12 h-12 rounded-full"><i class="fas fa-robot"></i></div>
+                            <img src="/images/ai-astrologer-illustration.png" alt="AI" class="w-12 h-12 rounded-full object-cover">
                             <div>
                                 <p class="bg-[#2a1e3c] p-3 rounded-2xl rounded-tl-none text-sm">नमस्ते! I'm Bramha AI. Your Jupiter is strong. Ask me anything about your career, marriage, or health.</p>
                                 <span class="text-xs text-gray-400">AI Astrologer • just now</span>
@@ -1087,40 +1091,40 @@
                     <div class="swiper-slide">
                         <div class="card p-6 max-w-md mx-auto">
                             <div class="flex items-center gap-4">
-                                <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-user-circle"></i></div>
+                                <img src="/images/testimonial-1.jpg" alt="Rohan Sharma" class="w-16 h-16 rounded-full object-cover">
                                 <div>
                                     <p class="font-semibold">Rohan Sharma</p>
                                     <p class="text-xs text-gray-400">Lucknow, UP</p>
                                 </div>
                             </div>
                             <p class="mt-4 italic">"Bramha AI's kundli matching was spot on! Got married within months."</p>
-                            <div class="dummy-img mt-4 w-full h-24"><i class="fab fa-instagram"></i> social post</div>
+                            <img src="/images/testimonial-1-post.jpg" alt="Instagram post" class="mt-4 w-full h-24 object-cover rounded-lg">
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="card p-6 max-w-md mx-auto">
                             <div class="flex items-center gap-4">
-                                <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-user-circle"></i></div>
+                                <img src="/images/testimonial-2.jpg" alt="Priya Verma" class="w-16 h-16 rounded-full object-cover">
                                 <div>
                                     <p class="font-semibold">Priya Verma</p>
                                     <p class="text-xs text-gray-400">Varanasi, UP</p>
                                 </div>
                             </div>
                             <p class="mt-4 italic">"Daily horoscope guided my career. Got a promotion as predicted."</p>
-                            <div class="dummy-img mt-4 w-full h-24"><i class="fab fa-facebook"></i> social post</div>
+                            <img src="/images/testimonial-2-post.jpg" alt="Facebook post" class="mt-4 w-full h-24 object-cover rounded-lg">
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="card p-6 max-w-md mx-auto">
                             <div class="flex items-center gap-4">
-                                <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-user-circle"></i></div>
+                                <img src="/images/testimonial-3.jpg" alt="Amit Yadav" class="w-16 h-16 rounded-full object-cover">
                                 <div>
                                     <p class="font-semibold">Amit Yadav</p>
                                     <p class="text-xs text-gray-400">Ayodhya, UP</p>
                                 </div>
                             </div>
                             <p class="mt-4 italic">"Remedies improved my health. Thanks Bramha!"</p>
-                            <div class="dummy-img mt-4 w-full h-24"><i class="fab fa-youtube"></i> video review</div>
+                            <img src="/images/testimonial-3-post.jpg" alt="YouTube review" class="mt-4 w-full h-24 object-cover rounded-lg">
                         </div>
                     </div>
                 </div>
@@ -1172,7 +1176,7 @@
             <div class="contact-info">
                 <p>📧 <strong>Email:</strong> <a href="mailto:support@bramha.ai" style="color:gold;">support@bramha.ai</a></p>
                 <p>📞 <strong>Phone:</strong> +91 98765 43210</p>
-                <p>📍 <strong>Office:</strong> Bramha AI, Gurugram, India</p>
+                <p>📍 <strong>Office:</strong> Shri Acharya Nirmalanand Ji, Kanpur, Uttar Pradesh, India</p>
                 <div class="map-placeholder">🗺️ Map loading soon</div>
             </div>
         </section>
@@ -1180,9 +1184,9 @@
         <!-- CTA SECTION -->
         <section id="cta" style="min-height: auto; padding: 40px 5%;">
             <div class="text-center">
-                <div class="dummy-img w-24 h-24 mx-auto mb-4 rounded-full"><i class="fas fa-crown"></i></div>
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-black text-3d" style="color: var(--primary-glow);">Begin Your Cosmic Journey Today</h2>
-                <p class="text-xl mb-8 text-gray-300">Join 1 Lakh+ users from Uttar Pradesh and beyond. Get your first Kundli free.</p>
+                <img src="/images/bramha-ai-cta-icon.png" alt="Crown" class="w-24 h-24 mx-auto mb-4 object-contain">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-black text-3d" style="color: var(--primary-glow);">Begin Your Vedic Journey Today</h2>
+                <p class="text-xl mb-8 text-gray-300">Join 1 Lakh+ users from Uttar Pradesh and beyond. Get your first Kundli accurately.</p>
                 <a href="#" class="btn-3d inline-block bg-black/70 border-2 border-[#d4af37] hover:bg-[#d4af37] hover:text-black text-white font-bold py-4 px-12 rounded-full text-xl"><i class="fas fa-moon mr-2"></i> Get Free Kundli</a>
             </div>
         </section>

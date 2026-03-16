@@ -2191,6 +2191,1550 @@
             filter: brightness(1.1);
         }
 
+        /* Dummy image placeholders */
+        .dummy-img {
+            background: rgba(42, 30, 60, 0.8);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #d4af37;
+            font-size: 2rem;
+            border: 2px dashed rgba(212, 175, 55, 0.4);
+            min-height: 100px;
+            backdrop-filter: blur(4px);
+        }
+        .dummy-img-sm {
+            min-height: 60px;
+            font-size: 1.5rem;
+        }
+
+        /* 3D text effect */
+        .text-3d {
+            transform: perspective(800px) rotateX(2deg);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3), 0 5px 15px rgba(212,175,55,0.3);
+            transition: transform 0.2s;
+        }
+        .text-3d:hover {
+            transform: perspective(800px) rotateX(0deg) translateY(-2px);
+        }
+
+        /* Hero layout */
+        .hero-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+        @media (min-width: 1024px) {
+            .hero-container {
+                flex-direction: row;
+                text-align: left;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .hero-text { flex: 1; }
+            .hero-portrait { flex: 0 0 300px; }
+        }
+        .hero-portrait .dummy-img {
+            width: 100%;
+            max-width: 300px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        /* Swiper pagination */
+        .swiper-pagination-bullet {
+            background: var(--primary-glow) !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .hamburger-wrapper { display: block; }
+            .header {
+                padding: 0 15px;
+            }
+            .logo {
+                font-size: 1.4rem;
+            }
+            .theme-switch {
+                margin-right: 10px;
+                --size: 1.3rem;
+            }
+            .section-title {
+                font-size: 2rem;
+                padding-left: 15px;
+            }
+            .card {
+                padding: 20px;
+            }
+            .card h3 {
+                font-size: 1.5rem;
+            }
+            .service-detailed {
+                padding: 20px;
+            }
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .footer-social {
+                justify-content: center;
+            }
+            .hero-portrait .dummy-img {
+                max-width: 250px;
+                height: 350px;
+            }
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .card, .service-detailed, .social-card, .footer, .header {
+                animation-duration: 10s;
+            }
+        }
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .card h3 {
+                font-size: 1.3rem;
+            }
+            .button .wrap {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body class="theme-navy-neon">
+    <!-- Progress Bar Overlay -->
+    <div id="progress-overlay">
+        <div class="progress-text">Loading Cosmic Chart</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="progress-text" id="progress-percent">0%</div>
+    </div>
+
+    <!-- Three.js canvas container -->
+    <div id="canvas-container"></div>
+
+    <!-- Fixed Header -->
+    <header class="header">
+        <div class="logo">✨ Bramha AI</div>
+        <div class="theme-switcher">
+            <label class="theme-switch">
+                <input type="checkbox" class="theme-switch__checkbox" id="themeToggle">
+                <div class="theme-switch__container">
+                    <div class="theme-switch__clouds"></div>
+                    <div class="theme-switch__stars-container">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 55" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M135.831 3.00688C135.055 3.85027 134.111 4.29946 133 4.35447C134.111 4.40947 135.055 4.85867 135.831 5.71123C136.607 6.55462 136.996 7.56303 136.996 8.72727C136.996 7.95722 137.172 7.25134 137.525 6.59129C137.886 5.93124 138.372 5.39954 138.98 5.00535C139.598 4.60199 140.268 4.39114 141 4.35447C139.88 4.2903 138.936 3.85027 138.16 3.00688C137.384 2.16348 136.996 1.16425 136.996 0C136.996 1.16425 136.607 2.16348 135.831 3.00688ZM31 23.3545C32.1114 23.2995 33.0551 22.8503 33.8313 22.0069C34.6075 21.1635 34.9956 20.1642 34.9956 19C34.9956 20.1642 35.3837 21.1635 36.1599 22.0069C36.9361 22.8503 37.8798 23.2903 39 23.3545C38.2679 23.3911 37.5976 23.602 36.9802 24.0053C36.3716 24.3995 35.8864 24.9312 35.5248 25.5913C35.172 26.2513 34.9956 26.9572 34.9956 27.7273C34.9956 26.563 34.6075 25.5546 33.8313 24.7112C33.0551 23.8587 32.1114 23.4095 31 23.3545ZM0 36.3545C1.11136 36.2995 2.05513 35.8503 2.83131 35.0069C3.6075 34.1635 3.99559 33.1642 3.99559 32C3.99559 33.1642 4.38368 34.1635 5.15987 35.0069C5.93605 35.8503 6.87982 36.2903 8 36.3545C7.26792 36.3911 6.59757 36.602 5.98015 37.0053C5.37155 37.3995 4.88644 37.9312 4.52481 38.5913C4.172 39.2513 3.99559 39.9572 3.99559 40.7273C3.99559 39.563 3.6075 38.5546 2.83131 37.7112C2.05513 36.8587 1.11136 36.4095 0 36.3545ZM56.8313 24.0069C56.0551 24.8503 55.1114 25.2995 54 25.3545C55.1114 25.4095 56.0551 25.8587 56.8313 26.7112C57.6075 27.5546 57.9956 28.563 57.9956 29.7273C57.9956 28.9572 58.172 28.2513 58.5248 27.5913C58.8864 26.9312 59.3716 26.3995 59.9802 26.0053C60.5976 25.602 61.2679 25.3911 62 25.3545C60.8798 25.2903 59.9361 24.8503 59.1599 24.0069C58.3837 23.1635 57.9956 22.1642 57.9956 21C57.9956 22.1642 57.6075 23.1635 56.8313 24.0069ZM81 25.3545C82.1114 25.2995 83.0551 24.8503 83.8313 24.0069C84.6075 23.1635 84.9956 22.1642 84.9956 21C84.9956 22.1642 85.3837 23.1635 86.1599 24.0069C86.9361 24.8503 87.8798 25.2903 89 25.3545C88.2679 25.3911 87.5976 25.602 86.9802 26.0053C86.3716 26.3995 85.8864 26.9312 85.5248 27.5913C85.172 28.2513 84.9956 28.9572 84.9956 29.7273C84.9956 28.563 84.6075 27.5546 83.8313 26.7112C83.0551 25.8587 82.1114 25.4095 81 25.3545ZM136 36.3545C137.111 36.2995 138.055 35.8503 138.831 35.0069C139.607 34.1635 139.996 33.1642 139.996 32C139.996 33.1642 140.384 34.1635 141.16 35.0069C141.936 35.8503 142.88 36.2903 144 36.3545C143.268 36.3911 142.598 36.602 141.98 37.0053C141.372 37.3995 140.886 37.9312 140.525 38.5913C140.172 39.2513 139.996 39.9572 139.996 40.7273C139.996 39.563 139.607 38.5546 138.831 37.7112C138.055 36.8587 137.111 36.4095 136 36.3545ZM101.831 49.0069C101.055 49.8503 100.111 50.2995 99 50.3545C100.111 50.4095 101.055 50.8587 101.831 51.7112C102.607 52.5546 102.996 53.563 102.996 54.7273C102.996 53.9572 103.172 53.2513 103.525 52.5913C103.886 51.9312 104.372 51.3995 104.98 51.0053C105.598 50.602 106.268 50.3911 107 50.3545C105.88 50.2903 104.936 49.8503 104.16 49.0069C103.384 48.1635 102.996 47.1642 102.996 46C102.996 47.1642 102.607 48.1635 101.831 49.0069Z" fill="currentColor"></path>
+                        </svg>
+                    </div>
+                    <div class="theme-switch__circle-container">
+                        <div class="theme-switch__sun-moon-container">
+                            <div class="theme-switch__sun"></div>
+                            <div class="theme-switch__moon">
+                                <div class="theme-switch__spot"></div>
+                                <div class="theme-switch__spot"></div>
+                                <div class="theme-switch__spot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <div class="button-container">
+                        <a href="#hero" class="nav-link">Home</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <div class="button-container">
+                        <a href="#" class="nav-link">Services</a>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="panchang.html" class="dropdown-item"><span class="icon">🌞</span> AI Panchang</a>
+                        <a href="horoscope.html" class="dropdown-item"><span class="icon">⭐</span> Daily Horoscope</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="button-container">
+                        <a href="#testimonials" class="nav-link">Testimonials</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="button-container">
+                        <a href="#about" class="nav-link">About</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="button-container">
+                        <a href="#social" class="nav-link">Social</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="button-container">
+                        <a href="#contact" class="nav-link">Contact</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="hamburger-wrapper">
+            <input type="checkbox" id="checkbox">
+            <label for="checkbox" class="toggle">
+                <div class="bars" id="bar1"></div>
+                <div class="bars" id="bar2"></div>
+                <div class="bars" id="bar3"></div>
+            </label>
+        </div>
+    </header>
+
+    <div class="side-menu" id="sideMenu">
+        <a href="#hero" class="side-link">🏠 Home</a>
+        <a href="#services" class="side-link">✨ Services</a>
+        <a href="#panchang-section" class="side-link">🌞 AI Panchang</a>
+        <a href="#testimonials" class="side-link">🗣️ Testimonials</a>
+        <a href="#about" class="side-link">📖 About Us</a>
+        <a href="#social" class="side-link">📱 Social Media</a>
+        <a href="#contact" class="side-link">📞 Contact</a>
+    </div>
+
+    <main class="content">
+        <!-- HERO SECTION -->
+        <section id="hero">
+            <div class="hero-container">
+                <div class="hero-text" data-aos="fade-right">
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight text-3d" style="font-size: clamp(2.5rem, 8vw, 4rem);">Unlock Your Destiny with <span class="text-[#d4af37]">Bramha AI</span></h1>
+                    <p class="text-xl md:text-2xl text-gray-300 mt-4 max-w-2xl">India’s first AI astrologer – instant Kundli, personalized remedies, 95% accuracy.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mt-10">
+                        <a href="#" class="btn-3d bg-[#d4af37] text-black font-bold py-3 px-8 rounded-full text-lg flex items-center justify-center gap-2"><i class="fas fa-moon"></i> Free Kundli</a>
+                        <a href="#" class="btn-3d border border-[#d4af37] text-white font-bold py-3 px-8 rounded-full text-lg flex items-center justify-center gap-2"><i class="fas fa-play"></i> Watch Demo</a>
+                    </div>
+                    <!-- Video placeholder -->
+                    <div class="mt-12 relative w-64 h-36 mx-auto lg:mx-0 rounded-xl overflow-hidden border-2 border-[#d4af37] bg-[#1a1225] flex items-center justify-center">
+                        <i class="fas fa-play-circle text-4xl text-[#d4af37]"></i>
+                        <span class="sr-only">Video intro</span>
+                    </div>
+                </div>
+                <div class="hero-portrait" data-aos="fade-left">
+                    <div class="dummy-img w-full max-w-xs h-96 mx-auto rounded-2xl border-4 border-[#d4af37] flex items-center justify-center">
+                        <i class="fas fa-user-tie text-7xl"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS SECTION -->
+        <section id="stats">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div data-aos="zoom-in">
+                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-calendar-alt"></i></div>
+                    <div class="text-3xl font-bold text-[#d4af37] counter" data-target="10">0</div>
+                    <p>Years of Research</p>
+                </div>
+                <div data-aos="zoom-in" data-aos-delay="100">
+                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-users"></i></div>
+                    <div class="text-3xl font-bold text-[#d4af37] counter" data-target="100000">0</div>
+                    <p>Happy Users (UP + India)</p>
+                </div>
+                <div data-aos="zoom-in" data-aos-delay="200">
+                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-chart-line"></i></div>
+                    <div class="text-3xl font-bold text-[#d4af37] counter" data-target="95">0</div>
+                    <p>Prediction Accuracy</p>
+                </div>
+                <div data-aos="zoom-in" data-aos-delay="300">
+                    <div class="dummy-img w-16 h-16 mx-auto mb-3 rounded-full"><i class="fas fa-brain"></i></div>
+                    <div class="text-3xl font-bold text-[#d4af37] counter" data-target="100">0</div>
+                    <p>AI Algorithms</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES SECTION - Informational cards with premium buttons -->
+        <section id="services">
+            <h2 class="section-title" data-aos="fade-down">Astrology Services <span class="text-[#d4af37]">Powered by AI</span></h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: AI Panchang -->
+                <div class="card" data-aos="flip-left" data-tilt>
+                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>AI Panchang</h3>
+                    <p class="text-sm text-gray-400 mt-2">Get detailed daily Panchang with AI insights. Accurate tithi, nakshatra, yoga, karana for any location.</p>
+                    <a href="panchang.html" class="btn-3d">Explore Now</a>
+                </div>
+                <!-- Card 2: Daily Horoscope -->
+                <div class="card" data-aos="flip-left" data-aos-delay="100" data-tilt>
+                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-sun"></i></div>
+                    <h3>Daily Horoscope</h3>
+                    <p class="text-sm text-gray-400 mt-2">Personalized horoscope based on your sun sign. AI-powered predictions for love, career, health.</p>
+                    <a href="horoscope.html" class="btn-3d">Explore Now</a>
+                </div>
+                <!-- Card 3: Match Making -->
+                <div class="card" data-aos="flip-left" data-aos-delay="200" data-tilt>
+                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-heart"></i></div>
+                    <h3>Match Making</h3>
+                    <p class="text-sm text-gray-400 mt-2">Kundli Milan with AI compatibility score. 36 gunas analysis and married life predictions.</p>
+                    <a href="panchang.html" class="btn-3d">Explore Now</a>
+                </div>
+                <!-- Card 4: Remedies & Gems -->
+                <div class="card" data-aos="flip-left" data-aos-delay="300" data-tilt>
+                    <div class="dummy-img w-full h-40 mb-4"><i class="fas fa-gem"></i></div>
+                    <h3>Remedies & Gems</h3>
+                    <p class="text-sm text-gray-400 mt-2">AI-suggested gemstones, mantras, and yagyas based on your birth chart deficiencies.</p>
+                    <a href="panchang.html" class="btn-3d">Explore Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section id="how-it-works">
+            <h2 class="section-title" data-aos="fade-down">How Bramha AI Works</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 relative">
+                <div class="absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent hidden md:block"></div>
+                <!-- Step 1 -->
+                <div class="relative z-10 text-center w-64" data-aos="fade-right">
+                    <div class="bg-[#1a122f] p-5 rounded-full w-32 h-32 mx-auto border-4 border-[#d4af37] flex items-center justify-center">
+                        <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-calendar-alt"></i></div>
+                    </div>
+                    <h3 class="mt-4 text-xl font-semibold">1. Enter Details</h3>
+                    <p class="text-sm text-gray-400">Birth date, time, place</p>
+                    <div class="flex gap-1 mt-2 justify-center">
+                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="relative z-10 text-center w-64" data-aos="fade-up">
+                    <div class="bg-[#1a122f] p-5 rounded-full w-32 h-32 mx-auto border-4 border-[#d4af37] flex items-center justify-center">
+                        <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-robot"></i></div>
+                    </div>
+                    <h3 class="mt-4 text-xl font-semibold">2. AI Analysis</h3>
+                    <p class="text-sm text-gray-400">Machine learning on 10M+ charts</p>
+                    <div class="flex gap-1 mt-2 justify-center">
+                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="relative z-10 text-center w-64" data-aos="fade-left">
+                    <div class="bg-[#1a122f] p-5 rounded-full w-32 h-32 mx-auto border-4 border-[#d4af37] flex items-center justify-center">
+                        <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-file-pdf"></i></div>
+                    </div>
+                    <h3 class="mt-4 text-xl font-semibold">3. Receive Report</h3>
+                    <p class="text-sm text-gray-400">Detailed PDF + remedy video</p>
+                    <div class="flex gap-1 mt-2 justify-center">
+                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                        <div class="dummy-img dummy-img-sm w-10 h-10"><i class="fas fa-image"></i></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Video placeholder -->
+            <div class="dummy-img w-full max-w-md mx-auto h-48 mt-16">
+                <i class="fas fa-play-circle text-5xl"></i>
+                <span class="ml-2">How it works</span>
+            </div>
+        </section>
+
+        <!-- AI ASTROLOGER PREVIEW -->
+        <section id="ai-preview">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="flex-1" data-aos="fade-right">
+                    <div class="dummy-img w-80 h-80 mx-auto rounded-3xl border-4 border-[#d4af37]"><i class="fas fa-user-tie text-7xl"></i></div>
+                    <div class="flex gap-2 justify-center mt-4">
+                        <div class="dummy-img dummy-img-sm w-20 h-24"><i class="fas fa-image"></i></div>
+                        <div class="dummy-img dummy-img-sm w-32 h-24"><i class="fas fa-image"></i></div>
+                    </div>
+                </div>
+                <div class="flex-1" data-aos="fade-left">
+                    <div class="card p-6 rounded-3xl" style="background: rgba(20,12,30,0.8);">
+                        <div class="flex items-start gap-3 mb-4">
+                            <div class="dummy-img w-12 h-12 rounded-full"><i class="fas fa-robot"></i></div>
+                            <div>
+                                <p class="bg-[#2a1e3c] p-3 rounded-2xl rounded-tl-none text-sm">नमस्ते! I'm Bramha AI. Your Jupiter is strong. Ask me anything about your career, marriage, or health.</p>
+                                <span class="text-xs text-gray-400">AI Astrologer • just now</span>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 flex-row-reverse">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">👤</div>
+                            <div>
+                                <p class="bg-[#d4af3720] p-3 rounded-2xl rounded-tr-none text-sm border border-[#d4af37]">What's my lucky gem?</p>
+                                <span class="text-xs text-gray-400">You • a moment ago</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex gap-2">
+                            <input type="text" placeholder="Ask your question..." class="flex-1 bg-black/40 border border-[#d4af37] rounded-full px-4 py-2 text-sm">
+                            <button class="bg-[#d4af37] text-black px-4 py-2 rounded-full"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Panchang Section (original, kept) -->
+        <section id="panchang-section" class="service-section">
+            <h2 class="section-title">🌞 AI Panchang</h2>
+            <div class="service-detailed">
+                <p>Bramha AI's <strong>AI Panchang</strong> is the most detailed, accurate, and beautifully explained daily calendar. Powered by Swiss Ephemeris and advanced AI, it decodes cosmic influences for any date, time, and place.</p>
+                <p><strong>Why Bramha AI?</strong> We combine ancient Vedic wisdom with cutting‑edge AI. Our interpretation tells you <em>what</em> each element means, <em>how</em> it affects your day, <em>why</em> it matters, and <em>when</em> to act – all in warm Hinglish.</p>
+                <p><strong>How to use:</strong> Enter date, time, and location below. Click "Get AI Analysis".</p>
+            </div>
+            <div class="card" id="panchang">
+                <h3>Enter Your Details</h3>
+                <input type="date" id="panchang-date" value="1996-07-04">
+                <input type="time" id="panchang-time" value="09:10:00" step="1">
+
+                <!-- Location input with autocomplete -->
+                <div class="location-wrapper">
+                    <input type="text" id="locationInput" placeholder="Enter city (e.g., Delhi, India)" autocomplete="off">
+                    <div id="suggestions"></div>
+                </div>
+
+                <!-- Hidden lat/lon/timezone fields -->
+                <input type="hidden" id="panchang-lat" value="18.404">
+                <input type="hidden" id="panchang-lon" value="75.195">
+                <input type="hidden" id="panchang-tz" value="5.5">
+
+                <button class="button" id="get-panchang">
+                    <div class="wrap"><p><span>✧</span><span>✦</span> Get AI Analysis</p></div>
+                </button>
+                <div id="panchang-result" class="result-box">
+                    <!-- Progress bar container (hidden initially) -->
+                    <div class="progress-bar-container" style="display: none;">
+                        <div class="progress-bar-outer">
+                            <div class="progress-bar-fill" id="analysis-progress" style="width:0%"></div>
+                        </div>
+                        <div class="progress-percentage" id="analysis-percentage">0%</div>
+                    </div>
+                    <div class="result-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS SECTION -->
+        <section id="testimonials">
+            <h2 class="section-title">What Our <span class="text-[#d4af37]">UP Users</span> Say</h2>
+            <!-- Swiper carousel -->
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="card p-6 max-w-md mx-auto">
+                            <div class="flex items-center gap-4">
+                                <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-user-circle"></i></div>
+                                <div>
+                                    <p class="font-semibold">Rohan Sharma</p>
+                                    <p class="text-xs text-gray-400">Lucknow, UP</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 italic">"Bramha AI's kundli matching was spot on! Got married within months."</p>
+                            <div class="dummy-img mt-4 w-full h-24"><i class="fab fa-instagram"></i> social post</div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card p-6 max-w-md mx-auto">
+                            <div class="flex items-center gap-4">
+                                <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-user-circle"></i></div>
+                                <div>
+                                    <p class="font-semibold">Priya Verma</p>
+                                    <p class="text-xs text-gray-400">Varanasi, UP</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 italic">"Daily horoscope guided my career. Got a promotion as predicted."</p>
+                            <div class="dummy-img mt-4 w-full h-24"><i class="fab fa-facebook"></i> social post</div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="card p-6 max-w-md mx-auto">
+                            <div class="flex items-center gap-4">
+                                <div class="dummy-img w-16 h-16 rounded-full"><i class="fas fa-user-circle"></i></div>
+                                <div>
+                                    <p class="font-semibold">Amit Yadav</p>
+                                    <p class="text-xs text-gray-400">Ayodhya, UP</p>
+                                </div>
+                            </div>
+                            <p class="mt-4 italic">"Remedies improved my health. Thanks Bramha!"</p>
+                            <div class="dummy-img mt-4 w-full h-24"><i class="fab fa-youtube"></i> video review</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about">
+            <h2 class="section-title">About Bramha AI</h2>
+            <div class="about-text">
+                <p>Bramha AI makes Vedic astrology accessible to everyone. We are astrologers, data scientists, and AI engineers who believe the stars speak to all of us.</p>
+                <p>Our technology uses the <strong>Swiss Ephemeris</strong> (NASA‑grade) and custom AI to transform raw data into rich, contextual narratives – scientifically rigorous and spiritually resonant.</p>
+                <p><strong>✨ Trusted by over 50,000 users worldwide.</strong></p>
+            </div>
+        </section>
+
+        <!-- Social Media Section -->
+        <section id="social">
+            <h2 class="section-title">Connect With Us</h2>
+            <div class="social-grid">
+                <div class="social-card">
+                    <div class="social-icon"><i class="fab fa-instagram"></i></div>
+                    <h3>Instagram</h3>
+                    <p>Daily astro memes, transit updates, live Q&A.</p>
+                    <p><strong>24k followers</strong></p>
+                    <a href="#" class="social-btn"><i class="fab fa-instagram"></i> @bramha_ai</a>
+                </div>
+                <div class="social-card">
+                    <div class="social-icon"><i class="fab fa-youtube"></i></div>
+                    <h3>YouTube</h3>
+                    <p>Weekly deep‑dives into charts, periods, remedies.</p>
+                    <p><strong>15k subscribers</strong></p>
+                    <a href="#" class="social-btn"><i class="fab fa-youtube"></i> Bramha AI Astro</a>
+                </div>
+                <div class="social-card">
+                    <div class="social-icon"><i class="fab fa-facebook"></i></div>
+                    <h3>Facebook</h3>
+                    <p>Join 18k members for daily discussions.</p>
+                    <p><strong>18k members</strong></p>
+                    <a href="#" class="social-btn"><i class="fab fa-facebook"></i> Bramha AI Official</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2 class="section-title">Get in Touch</h2>
+            <div class="contact-info">
+                <p>📧 <strong>Email:</strong> <a href="mailto:support@bramha.ai" style="color:gold;">support@bramha.ai</a></p>
+                <p>📞 <strong>Phone:</strong> +91 98765 43210</p>
+                <p>📍 <strong>Office:</strong> Bramha AI, Gurugram, India</p>
+                <div class="map-placeholder">🗺️ Map loading soon</div>
+            </div>
+        </section>
+
+        <!-- CTA SECTION -->
+        <section id="cta" style="min-height: auto; padding: 40px 5%;">
+            <div class="text-center">
+                <div class="dummy-img w-24 h-24 mx-auto mb-4 rounded-full"><i class="fas fa-crown"></i></div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-black text-3d" style="color: var(--primary-glow);">Begin Your Cosmic Journey Today</h2>
+                <p class="text-xl mb-8 text-gray-300">Join 1 Lakh+ users from Uttar Pradesh and beyond. Get your first Kundli free.</p>
+                <a href="#" class="btn-3d inline-block bg-black/70 border-2 border-[#d4af37] hover:bg-[#d4af37] hover:text-black text-white font-bold py-4 px-12 rounded-full text-xl"><i class="fas fa-moon mr-2"></i> Get Free Kundli</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Industry Grade Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Bramha AI</h4>
+                <ul>
+                    <li><a href="#hero">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="panchang.html">AI Panchang</a></li>
+                    <li><a href="horoscope.html">Daily Horoscope</a></li>
+                    <li><a href="#">Match Making</a></li>
+                    <li><a href="#">Kundli Generation</a></li>
+                    <li><a href="#">Gemstone Advice</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Follow Us</h4>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+                <h4 style="margin-top: 20px;">Newsletter</h4>
+                <div class="newsletter">
+                    <div class="newsletter-input">
+                        <input type="email" placeholder="Your email">
+                        <button>Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Bramha AI. All rights reserved. | Designed with ✨ in India | <a href="#">Back to top</a></p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Three.js import map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        // ========== OPTIMIZED 3D EARTH WITH ZODIAC SYMBOLS ==========
+        import * as THREE from 'three';
+
+        const isMobile = window.innerWidth <= 768;
+
+        const progressOverlay = document.getElementById('progress-overlay');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
+        let progress = 0;
+
+        function updateProgress(value) {
+            progress = Math.min(value, 100);
+            progressBar.style.width = progress + '%';
+            progressPercent.innerText = progress + '%';
+            if (progress >= 100) {
+                setTimeout(() => {
+                    progressOverlay.classList.add('fade-out');
+                }, 500);
+            }
+        }
+
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x050510);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 3);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+        updateProgress(10);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffeedd, 1);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+        updateProgress(20);
+
+        // Create main group
+        const earthGroup = new THREE.Group();
+        scene.add(earthGroup);
+
+        // Earth sphere with high-res texture
+        const geometry = new THREE.SphereGeometry(0.7, isMobile ? 32 : 64, isMobile ? 32 : 64);
+        const textureLoader = new THREE.TextureLoader();
+        const earthTexture = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+        const material = new THREE.MeshStandardMaterial({ map: earthTexture });
+        const earth = new THREE.Mesh(geometry, material);
+        earthGroup.add(earth);
+        updateProgress(40);
+
+        // Zodiac symbols around the Earth
+        function createZodiacSprite(symbol, color) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64;
+            canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, 64, 64);
+            ctx.font = 'bold 40px "Arial Unicode MS", sans-serif';
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'gold';
+            ctx.shadowBlur = 15;
+            ctx.fillText(symbol, 32, 32);
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ map: texture, blending: THREE.AdditiveBlending, depthTest: false });
+            const sprite = new THREE.Sprite(material);
+            sprite.scale.set(0.5, 0.5, 0.5);
+            return sprite;
+        }
+
+        const zodiacSymbols = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+        const zodiacColors = ['#ff4d4d','#66cc66','#ffcc00','#ff9966','#ff6600','#9999ff','#ff99cc','#cc3333','#ff9933','#666699','#33cccc','#9966cc'];
+
+        const orbitRadius = 1.2;
+        for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2;
+            const x = Math.cos(angle) * orbitRadius;
+            const z = Math.sin(angle) * orbitRadius;
+            const sprite = createZodiacSprite(zodiacSymbols[i], zodiacColors[i]);
+            sprite.position.set(x, 0, z);
+            earthGroup.add(sprite);
+        }
+        updateProgress(60);
+
+        // Stars background
+        const starsGeo = new THREE.BufferGeometry();
+        const starsCount = isMobile ? 300 : 800;
+        const starPositions = new Float32Array(starsCount * 3);
+        for (let i = 0; i < starsCount; i++) {
+            const r = 5 + Math.random() * 10;
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            starPositions[i*3] = Math.sin(phi) * Math.cos(theta) * r;
+            starPositions[i*3+1] = Math.sin(phi) * Math.sin(theta) * r * 0.5;
+            starPositions[i*3+2] = Math.cos(phi) * r;
+        }
+        starsGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        const starsMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05, transparent: true, blending: THREE.AdditiveBlending });
+        const stars = new THREE.Points(starsGeo, starsMat);
+        scene.add(stars);
+        updateProgress(80);
+
+        // Scroll-driven rotation with throttling
+        let targetRotationY = 0;
+        let currentRotationY = 0;
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+                    const scrollPercent = maxScroll > 0 ? scrollY / maxScroll : 0;
+                    targetRotationY = scrollPercent * Math.PI * 2;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            currentRotationY += (targetRotationY - currentRotationY) * 0.1;
+            earthGroup.rotation.y = currentRotationY;
+            stars.rotation.y += 0.0002;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        updateProgress(100);
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.body.className = 'theme-sunny';
+            } else {
+                document.body.className = 'theme-navy-neon';
+            }
+        });
+
+        // ========== LOCATION AUTOCOMPLETE ==========
+        const locationInput = document.getElementById('locationInput');
+        const suggestionsDiv = document.getElementById('suggestions');
+        const latField = document.getElementById('panchang-lat');
+        const lonField = document.getElementById('panchang-lon');
+        const tzField = document.getElementById('panchang-tz');
+
+        let debounceTimer;
+        locationInput.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            const query = this.value.trim();
+            if (query.length < 3) {
+                suggestionsDiv.style.display = 'none';
+                return;
+            }
+            debounceTimer = setTimeout(() => {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            suggestionsDiv.style.display = 'none';
+                            return;
+                        }
+                        suggestionsDiv.innerHTML = data.map(place => 
+                            `<div data-lat="${place.lat}" data-lon="${place.lon}" data-display="${place.display_name}">${place.display_name}</div>`
+                        ).join('');
+                        suggestionsDiv.style.display = 'block';
+                    })
+                    .catch(() => suggestionsDiv.style.display = 'none');
+            }, 500);
+        });
+
+        suggestionsDiv.addEventListener('click', (e) => {
+            const target = e.target.closest('div');
+            if (!target) return;
+            const lat = target.dataset.lat;
+            const lon = target.dataset.lon;
+            const display = target.dataset.display;
+            latField.value = parseFloat(lat).toFixed(4);
+            lonField.value = parseFloat(lon).toFixed(4);
+            locationInput.value = display;
+            suggestionsDiv.style.display = 'none';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!locationInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+                suggestionsDiv.style.display = 'none';
+            }
+        });
+
+        // ========== API CALL WITH PROGRESS BAR ==========
+        const API_BASE = 'https://codewander-666-bramha-ai.hf.space';
+        let progressInterval = null;
+
+        document.getElementById('get-panchang').addEventListener('click', async () => {
+            const resultBox = document.getElementById('panchang-result');
+            const progressContainer = resultBox.querySelector('.progress-bar-container');
+            const progressFill = document.getElementById('analysis-progress');
+            const progressPercentText = document.getElementById('analysis-percentage');
+            const resultContent = resultBox.querySelector('.result-content');
+
+            if (progressInterval) clearInterval(progressInterval);
+
+            progressContainer.style.display = 'block';
+            resultContent.style.display = 'none';
+            resultContent.innerHTML = '';
+            progressFill.style.width = '0%';
+            progressPercentText.innerText = '0%';
+
+            let elapsed = 0;
+            const totalTime = 180;
+            const incrementPerSecond = 100 / totalTime;
+            progressInterval = setInterval(() => {
+                elapsed++;
+                let newWidth = elapsed * incrementPerSecond;
+                if (newWidth >= 99) newWidth = 99;
+                progressFill.style.width = newWidth + '%';
+                progressPercentText.innerText = Math.floor(newWidth) + '%';
+                if (elapsed >= totalTime) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                }
+            }, 1000);
+
+            const dateStr = document.getElementById('panchang-date').value.split('-');
+            const timeStr = document.getElementById('panchang-time').value.split(':');
+
+            const payload = {
+                year: parseInt(dateStr[0]),
+                month: parseInt(dateStr[1]),
+                day: parseInt(dateStr[2]),
+                hour: parseInt(timeStr[0]),
+                minute: parseInt(timeStr[1]),
+                second: timeStr[2] ? parseInt(timeStr[2]) : 0,
+                latitude: parseFloat(latField.value),
+                longitude: parseFloat(lonField.value),
+                timezone: parseFloat(tzField.value)
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/panchanga/analysis`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
+
+                clearInterval(progressInterval);
+                progressInterval = null;
+                progressFill.style.width = '99%';
+                progressPercentText.innerText = '99%';
+                await new Promise(resolve => setTimeout(resolve, 100));
+                progressFill.style.width = '100%';
+                progressPercentText.innerText = '100%';
+                await new Promise(resolve => setTimeout(resolve, 200));
+
+                progressContainer.style.display = 'none';
+                resultContent.style.display = 'block';
+                let cleanAnalysis = data.analysis.replace(/[#*]/g, '');
+                resultContent.innerText = cleanAnalysis;
+            } catch (err) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+                progressContainer.style.display = 'none';
+                resultContent.style.display = 'block';
+                resultContent.innerHTML = `❌ Error: ${err.message}`;
+            }
+        });
+
+        // ========== HAMBURGER & SMOOTH SCROLL ==========
+        const checkbox = document.getElementById('checkbox');
+        const sideMenu = document.getElementById('sideMenu');
+        checkbox?.addEventListener('change', (e) => {
+            sideMenu.classList.toggle('active', checkbox.checked);
+        });
+        document.querySelectorAll('.side-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                sideMenu.classList.remove('active');
+                checkbox.checked = false;
+            });
+        });
+        document.addEventListener('click', (event) => {
+            if (!sideMenu.contains(event.target) && !checkbox?.parentElement.contains(event.target) && sideMenu.classList.contains('active')) {
+                sideMenu.classList.remove('active');
+                checkbox.checked = false;
+            }
+        });
+        document.querySelectorAll('.nav-link, .side-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href?.startsWith('#')) {
+                    e.preventDefault();
+                    const target = document.getElementById(href.substring(1));
+                    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ========== AOS and Swiper ==========
+        if (typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true, disable: isMobile ? 'mobile' : false });
+
+        if (typeof Swiper !== 'undefined') {
+            new Swiper('.mySwiper', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                autoplay: { delay: 3000, disableOnInteraction: false },
+                breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } },
+                pagination: { el: '.swiper-pagination', clickable: true }
+            });
+        }
+
+        // Counters
+        const counters = document.querySelectorAll('.counter');
+        counters.forEach(counter => {
+            const update = () => {
+                const target = +counter.dataset.target;
+                const current = +counter.innerText;
+                const inc = target / 150;
+                if (current < target) {
+                    counter.innerText = Math.ceil(current + inc);
+                    requestAnimationFrame(() => setTimeout(update, 10));
+                } else counter.innerText = target;
+            };
+            update();
+        });
+    </script>
+
+    <!-- AOS and Swiper libraries -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+</html>            --metallic-3: #b8860b;
+        }
+        body.theme-sunny {
+            --bg-dark: #fef9e7;
+            --primary-glow: #ff8c00;
+            --secondary-glow: #ffa500;
+            --accent: #ff8c00;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --border-glow: rgba(255, 140, 0, 0.3);
+            --text-gradient: linear-gradient(135deg, #ff8c00, #ffa500, #ff8c00, #ffa500);
+            --metallic-1: #ffd700;
+            --metallic-2: #ffb347;
+            --metallic-3: #ffa500;
+        }
+        body.theme-sunny, body.theme-sunny .content {
+            color: #2c3e50;
+        }
+        body.theme-sunny .service-detailed,
+        body.theme-sunny .card,
+        body.theme-sunny .about-text,
+        body.theme-sunny .social-card,
+        body.theme-sunny .contact-info {
+            color: #2c3e50;
+        }
+        body.theme-sunny .card input,
+        body.theme-sunny .card select {
+            color: #2c3e50;
+            background: rgba(255,255,255,0.8);
+        }
+        body.theme-sunny .card input::placeholder {
+            color: #7f8c8d;
+        }
+
+        /* Animated gradient backgrounds */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background: var(--bg-dark);
+            transition: background 0.5s, color 0.5s;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 70%, rgba(255,215,0,0.15), transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+            100% { opacity: 0.3; transform: scale(1); }
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Progress Bar Overlay */
+        #progress-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            transition: opacity 1s;
+        }
+        #progress-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .progress-container {
+            width: 300px;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--primary-glow), var(--secondary-glow));
+            background-size: 300% 100%;
+            animation: shimmer 3s infinite linear;
+            transition: width 0.3s;
+        }
+        @keyframes shimmer {
+            0% { background-position: 100% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .progress-text {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            padding-top: 80px;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+        section {
+            min-height: 100vh;
+            padding: 60px 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            scroll-margin-top: 70px;
+        }
+        .service-section {
+            min-height: 100vh;
+            padding: 40px 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .section-title {
+            font-size: clamp(2.2rem, 8vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: var(--text-gradient);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease infinite;
+            text-shadow: 0 0 30px var(--primary-glow);
+            border-left: 8px solid var(--accent);
+            padding-left: 20px;
+            line-height: 1.2;
+        }
+        .service-detailed {
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--card-bg), var(--card-bg)), 
+                              linear-gradient(115deg, var(--metallic-1), var(--metallic-2), var(--metallic-3), var(--metallic-1));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            animation: metallicFlow 8s linear infinite;
+            font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+            line-height: 1.8;
+            color: inherit;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+        @keyframes metallicFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 0%; }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(10, 5, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--primary-glow)) 1;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            transform: translateZ(0);
+        }
+        .logo {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 700;
+            background: var(--text-gradient);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease infinite;
+            text-shadow: 0 0 20px var(--primary-glow);
+            white-space: nowrap;
+        }
+
+        /* Premium Theme Switch */
+        .theme-switch {
+            --size: 1.5rem;
+            --sun-color: #FFD700;
+            --moon-color: #c0c0c0;
+            position: relative;
+            display: inline-block;
+            width: calc(var(--size) * 2.5);
+            height: var(--size);
+            margin-right: 15px;
+        }
+        .theme-switch__checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+        .theme-switch__container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #2b2b3a, #1a1a2a);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.3s;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+        .theme-switch__circle-container {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: calc(var(--size) - 4px);
+            height: calc(var(--size) - 4px);
+            background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .theme-switch__sun-moon-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .theme-switch__moon {
+            width: 70%;
+            height: 70%;
+            background: #f5e6b0;
+            border-radius: 50%;
+            position: relative;
+            display: none;
+        }
+        .theme-switch__moon .theme-switch__spot {
+            position: absolute;
+            width: 20%;
+            height: 20%;
+            background: #c0a060;
+            border-radius: 50%;
+        }
+        .theme-switch__moon .theme-switch__spot:nth-child(1) { top: 20%; right: 10%; }
+        .theme-switch__moon .theme-switch__spot:nth-child(2) { bottom: 30%; left: 20%; }
+        .theme-switch__moon .theme-switch__spot:nth-child(3) { top: 50%; left: 40%; width: 15%; height: 15%; }
+        .theme-switch__sun {
+            width: 80%;
+            height: 80%;
+            background: #FFD700;
+            border-radius: 50%;
+            box-shadow: 0 0 15px #FFD700;
+            display: block;
+        }
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__circle-container {
+            transform: translateX(calc(100% + 4px));
+        }
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__sun-moon-container .theme-switch__sun {
+            display: none;
+        }
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__sun-moon-container .theme-switch__moon {
+            display: block;
+        }
+        .theme-switch__clouds {
+            position: absolute;
+            top: 20%;
+            left: 15%;
+            width: 15%;
+            height: 25%;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            filter: blur(3px);
+            transition: opacity 0.3s;
+        }
+        .theme-switch__stars-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .theme-switch__checkbox:checked + .theme-switch__container .theme-switch__stars-container {
+            opacity: 0.5;
+        }
+        .theme-switch__stars-container svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-item {
+            list-style: none;
+            position: relative;
+        }
+        .button-container {
+            position: relative;
+            padding: 3px;
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow), var(--primary-glow));
+            background-size: 200% auto;
+            border-radius: 2em;
+            transition: all 0.4s ease;
+            animation: gradientShift 5s ease infinite;
+        }
+        .button-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            border-radius: 2em;
+            z-index: -10;
+            filter: blur(0);
+            transition: filter 0.4s ease;
+        }
+        .button-container:hover::before {
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            filter: blur(1.2em);
+        }
+        .nav-link {
+            display: inline-block;
+            font-size: 1.2em;
+            padding: 0.6em 1em;
+            border-radius: 2em;
+            border: none;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 2px 2px 3px #000000b4;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        /* Dropdown - updated to only show two items */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(20,12,36,0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--primary-glow);
+            border-radius: 20px;
+            padding: 15px;
+            min-width: 200px;
+            z-index: 1001;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+        .dropdown:hover .dropdown-content {
+            display: flex;
+        }
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: linear-gradient(145deg, #2f2638, #1a1225);
+            border: 1px solid var(--primary-glow);
+            border-radius: 50px;
+            color: #f0e6d0;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .dropdown-item:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(145deg, #4a3a5a, #2a1f38);
+            color: var(--primary-glow);
+            box-shadow: 0 8px 0 #0f0a15;
+        }
+
+        /* Hamburger */
+        #checkbox {
+            display: none;
+        }
+        .toggle {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition-duration: .5s;
+            z-index: 1100;
+        }
+        .bars {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        #bar2 { transition-duration: .8s; }
+        #bar1, #bar3 { width: 70%; }
+        #checkbox:checked + .toggle .bars {
+            position: absolute;
+            transition-duration: .5s;
+        }
+        #checkbox:checked + .toggle #bar2 {
+            transform: scaleX(0);
+            transition-duration: .5s;
+        }
+        #checkbox:checked + .toggle #bar1 {
+            width: 100%;
+            transform: rotate(45deg);
+            transition-duration: .5s;
+        }
+        #checkbox:checked + .toggle #bar3 {
+            width: 100%;
+            transform: rotate(-45deg);
+            transition-duration: .5s;
+        }
+        #checkbox:checked + .toggle {
+            transition-duration: .5s;
+            transform: rotate(180deg);
+        }
+        .hamburger-wrapper {
+            display: none;
+        }
+
+        /* Side Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: rgba(15, 8, 25, 0.95);
+            backdrop-filter: blur(15px);
+            border-left: 2px solid var(--primary-glow);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.7);
+            z-index: 1050;
+            transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            padding: 100px 20px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .side-menu.active { right: 0; }
+        .side-link {
+            display: block;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #f0e6d0;
+            text-decoration: none;
+            background: linear-gradient(145deg, #2f2638, #1a1225);
+            border: 1px solid var(--primary-glow);
+            border-radius: 50px;
+            box-shadow: 0 8px 0 #0f0a15, 0 10px 20px black;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .side-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0 #0f0a15, 0 14px 25px black;
+            background: linear-gradient(145deg, #4a3a5a, #2a1f38);
+            color: var(--primary-glow);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--card-bg), var(--card-bg)), 
+                              linear-gradient(115deg, var(--metallic-1), var(--metallic-2), var(--metallic-3), var(--metallic-1));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            animation: metallicFlow 8s linear infinite;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 0 1px var(--primary-glow) inset;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            transform: perspective(800px) 
+                       rotateY(calc(var(--ratio-x, 0) * 3deg)) 
+                       rotateX(calc(var(--ratio-y, 0) * -3deg));
+            will-change: transform;
+            position: relative;
+            margin-top: 20px;
+        }
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            background: radial-gradient(circle at calc(50% + 50% * var(--ratio-x, 0)) calc(50% + 50% * var(--ratio-y, 0)), rgba(255,255,255,0.2), transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .card:hover::after { opacity: 1; }
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: var(--text-gradient);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 6s ease infinite;
+            border-bottom: 2px solid var(--primary-glow);
+            padding-bottom: 8px;
+        }
+
+        /* Premium button inside cards */
+        .card .btn-3d {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            color: #000;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            transform: perspective(500px) translateZ(0);
+            box-shadow: 0 5px 0 #8b6f2c, 0 8px 15px rgba(0,0,0,0.3);
+        }
+        .card .btn-3d:hover {
+            transform: perspective(500px) translateZ(10px);
+            box-shadow: 0 2px 0 #8b6f2c, 0 15px 25px rgba(212,175,55,0.4);
+            filter: brightness(1.1);
+        }
+
         /* Contact form styling */
         .contact-form {
             margin-top: 30px;

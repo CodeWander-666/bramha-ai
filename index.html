@@ -647,6 +647,59 @@
             filter: brightness(1.1);
         }
 
+        /* Contact form styling */
+        .contact-form {
+            margin-top: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 40px;
+            border: 1px solid var(--border-glow);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+            transition: box-shadow 0.3s;
+        }
+        .form-group textarea {
+            border-radius: 20px;
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--primary-glow);
+            border-color: var(--primary-glow);
+        }
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        .submit-btn {
+            background: linear-gradient(90deg, var(--primary-glow), var(--secondary-glow));
+            color: #000;
+            font-weight: 600;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 100%;
+            transform: perspective(500px) translateZ(0);
+            box-shadow: 0 5px 0 #8b6f2c, 0 8px 15px rgba(0,0,0,0.3);
+        }
+        .submit-btn:hover {
+            transform: perspective(500px) translateZ(10px);
+            box-shadow: 0 2px 0 #8b6f2c, 0 15px 25px rgba(212,175,55,0.4);
+        }
+
         /* Dummy image placeholders (no longer used but kept for reference) */
         .dummy-img {
             background: rgba(42, 30, 60, 0.8);
@@ -881,9 +934,9 @@
                         <a href="#" class="btn-3d bg-[#d4af37] text-black font-bold py-3 px-8 rounded-full text-lg flex items-center justify-center gap-2"><i class="fas fa-moon"></i> Accurate Kundli</a>
                         <a href="#" class="btn-3d border border-[#d4af37] text-white font-bold py-3 px-8 rounded-full text-lg flex items-center justify-center gap-2"><i class="fas fa-play"></i> Watch Demo</a>
                     </div>
-                    <!-- Video intro -->
-                    <div class="mt-12 relative w-64 h-36 mx-auto lg:mx-0 rounded-xl overflow-hidden border-2 border-[#d4af37] bg-[#1a1225] flex items-center justify-center">
-                        <video class="w-full h-full object-cover" poster="images/video-poster.jpg" controls>
+                    <!-- Video intro with autoplay -->
+                    <div class="mt-12 relative w-64 h-36 mx-auto lg:mx-0 rounded-xl overflow-hidden border-2 border-[#d4af37] bg-[#1a1225]">
+                        <video class="w-full h-full object-cover" poster="images/video-poster.jpg" autoplay muted loop playsinline>
                             <source src="videos/intro.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -927,28 +980,28 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Card 1: AI Panchang -->
                 <div class="card" data-aos="flip-left" data-tilt>
-                    <img src="images/service-kundli.png" alt="AI Panchang" class="w-full h-40 mb-4 object-contain">
+                    <img src="images/service-kundli.png" alt="AI Panchang" class="w-full h-40 mb-4 object-cover rounded-lg">
                     <h3>AI Panchang</h3>
                     <p class="text-sm text-gray-400 mt-2">Get detailed daily Panchang with AI insights. Accurate tithi, nakshatra, yoga, karana for any location.</p>
                     <a href="panchang.html" class="btn-3d">Explore Now</a>
                 </div>
                 <!-- Card 2: Daily Horoscope -->
                 <div class="card" data-aos="flip-left" data-aos-delay="100" data-tilt>
-                    <img src="images/service-horoscope.png" alt="Daily Horoscope" class="w-full h-40 mb-4 object-contain">
+                    <img src="images/service-horoscope.png" alt="Daily Horoscope" class="w-full h-40 mb-4 object-cover rounded-lg">
                     <h3>Daily Horoscope</h3>
                     <p class="text-sm text-gray-400 mt-2">Personalized horoscope based on your sun sign. AI-powered predictions for love, career, health.</p>
                     <a href="horoscope.html" class="btn-3d">Explore Now</a>
                 </div>
                 <!-- Card 3: Match Making -->
                 <div class="card" data-aos="flip-left" data-aos-delay="200" data-tilt>
-                    <img src="images/service-matchmaking.png" alt="Match Making" class="w-full h-40 mb-4 object-contain">
+                    <img src="images/service-matchmaking.png" alt="Match Making" class="w-full h-40 mb-4 object-cover rounded-lg">
                     <h3>Match Making</h3>
                     <p class="text-sm text-gray-400 mt-2">Kundli Milan with AI compatibility score. 36 gunas analysis and married life predictions.</p>
                     <a href="panchang.html" class="btn-3d">Explore Now</a>
                 </div>
                 <!-- Card 4: Remedies & Gems -->
                 <div class="card" data-aos="flip-left" data-aos-delay="300" data-tilt>
-                    <img src="images/service-remedies.png" alt="Remedies & Gems" class="w-full h-40 mb-4 object-contain">
+                    <img src="images/service-remedies.png" alt="Remedies & Gems" class="w-full h-40 mb-4 object-cover rounded-lg">
                     <h3>Remedies & Gems</h3>
                     <p class="text-sm text-gray-400 mt-2">AI-suggested gemstones, mantras, and yagyas based on your birth chart deficiencies.</p>
                     <a href="panchang.html" class="btn-3d">Explore Now</a>
@@ -998,9 +1051,9 @@
                     </div>
                 </div>
             </div>
-            <!-- Video placeholder -->
+            <!-- Video with autoplay -->
             <div class="w-full max-w-md mx-auto h-48 mt-16">
-                <video class="w-full h-full object-cover rounded-xl border-2 border-[#d4af37]" poster="images/how-it-works-poster.jpg" controls>
+                <video class="w-full h-full object-cover rounded-xl border-2 border-[#d4af37]" poster="images/how-it-works-poster.jpg" autoplay muted loop playsinline>
                     <source src="videos/how-it-works.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
@@ -1170,14 +1223,37 @@
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <!-- Contact Section with Web3Forms Form -->
         <section id="contact">
             <h2 class="section-title">Get in Touch</h2>
-            <div class="contact-info">
+            <div class="contact-info" style="margin-bottom: 30px;">
                 <p>📧 <strong>Email:</strong> <a href="mailto:support@bramha.ai" style="color:gold;">support@bramha.ai</a></p>
                 <p>📞 <strong>Phone:</strong> +91 98765 43210</p>
                 <p>📍 <strong>Office:</strong> Shri Acharya Nirmalanand Ji, Kanpur, Uttar Pradesh, India</p>
                 <div class="map-placeholder">🗺️ Map loading soon</div>
+            </div>
+
+            <!-- Web3Forms Contact Form (placeholder access key) -->
+            <div class="card" style="margin-top: 30px;">
+                <h3>Send us a message</h3>
+                <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+                    <!-- Replace with your actual access key -->
+                    <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+                    
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" placeholder="Your Message" required></textarea>
+                    </div>
+                    <!-- Honeypot to prevent spam -->
+                    <input type="checkbox" name="botcheck" style="display: none;">
+                    
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
             </div>
         </section>
 
@@ -1192,11 +1268,20 @@
         </section>
     </main>
 
-    <!-- Enhanced Industry Grade Footer -->
+    <!-- Premium Industry Grade Footer (compact) -->
     <footer class="footer">
         <div class="footer-grid">
+            <!-- Column 1: About & Contact -->
             <div class="footer-col">
                 <h4>Bramha AI</h4>
+                <p style="margin: 10px 0; line-height: 1.6; color: #ccc;">AI-powered Vedic astrology for the modern seeker. Accurate, personalized, and insightful.</p>
+                <p style="margin: 5px 0; color: #ccc;"><i class="fas fa-envelope" style="margin-right: 8px;"></i> support@bramha.ai</p>
+                <p style="margin: 5px 0; color: #ccc;"><i class="fas fa-phone-alt" style="margin-right: 8px;"></i> +91 98765 43210</p>
+                <p style="margin: 5px 0; color: #ccc;"><i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> Kanpur, Uttar Pradesh, India</p>
+            </div>
+            <!-- Column 2: Quick Links -->
+            <div class="footer-col">
+                <h4>Quick Links</h4>
                 <ul>
                     <li><a href="#hero">Home</a></li>
                     <li><a href="#about">About Us</a></li>
@@ -1205,6 +1290,7 @@
                     <li><a href="#">Careers</a></li>
                 </ul>
             </div>
+            <!-- Column 3: Services -->
             <div class="footer-col">
                 <h4>Services</h4>
                 <ul>
@@ -1215,6 +1301,7 @@
                     <li><a href="#">Gemstone Advice</a></li>
                 </ul>
             </div>
+            <!-- Column 4: Resources -->
             <div class="footer-col">
                 <h4>Resources</h4>
                 <ul>
@@ -1225,6 +1312,7 @@
                     <li><a href="#">Sitemap</a></li>
                 </ul>
             </div>
+            <!-- Column 5: Connect & Newsletter -->
             <div class="footer-col">
                 <h4>Follow Us</h4>
                 <div class="footer-social">
@@ -1241,10 +1329,27 @@
                         <button>Subscribe</button>
                     </div>
                 </div>
+                <!-- App badges -->
+                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="#" style="background: #000; padding: 8px 12px; border-radius: 8px; color: #fff; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px;"><i class="fab fa-google-play"></i> Google Play</a>
+                    <a href="#" style="background: #000; padding: 8px 12px; border-radius: 8px; color: #fff; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px;"><i class="fab fa-apple"></i> App Store</a>
+                </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 Bramha AI. All rights reserved. | Designed with ✨ in India | <a href="#">Back to top</a></p>
+        <!-- Bottom row with copyright, payment methods, and back to top -->
+        <div class="footer-bottom" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
+                <span>© 2026 Bramha AI. All rights reserved.</span>
+                <span>Designed with ✨ in India</span>
+                <a href="#" style="color: var(--primary-glow);">Back to top</a>
+            </div>
+            <div style="display: flex; gap: 15px; justify-content: center; font-size: 1.5rem; color: #ccc;">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-paypal"></i>
+                <i class="fas fa-credit-card"></i> <!-- UPI / Rupay placeholder -->
+            </div>
         </div>
     </footer>
 

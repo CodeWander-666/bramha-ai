@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Bramha AI · Daily Horoscope</title>
+    <title>Bramha AI · AI Panchang</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
@@ -1204,7 +1204,7 @@
                     </div>
                     <div class="dropdown-content">
                         <a href="panchang.html" class="dropdown-item"><span class="icon">🌞</span> AI Panchang</a>
-                        <a href="daily.html" class="dropdown-item"><span class="icon">⭐</span> Daily Horoscope</a>
+                        <a href="horoscope.html" class="dropdown-item"><span class="icon">⭐</span> Daily Horoscope</a>
                     </div>
                 </li>
                 <li class="nav-item">
@@ -1242,7 +1242,7 @@
     <div class="side-menu" id="sideMenu">
         <a href="index.html" class="side-link">🏠 Home</a>
         <a href="panchang.html" class="side-link">🌞 AI Panchang</a>
-        <a href="daily.html" class="side-link">⭐ Daily Horoscope</a>
+        <a href="horoscope.html" class="side-link">⭐ Daily Horoscope</a>
         <a href="blog.html" class="side-link">📝 Blogs</a>
         <a href="#about" class="side-link">📖 About Us</a>
         <a href="#social" class="side-link">📱 Social Media</a>
@@ -1250,19 +1250,18 @@
     </div>
 
     <main class="content">
-        <!-- AI Daily Horoscope Section -->
-        <section id="horoscope-section" class="service-section">
-            <h2 class="section-title">⭐ AI Daily Horoscope</h2>
+        <!-- AI Panchang Section -->
+        <section id="panchang-section" class="service-section">
+            <h2 class="section-title">🌞 AI Panchang</h2>
             <div class="service-detailed">
-                <p>Bramha AI's <strong>AI Daily Horoscope</strong> gives you a personalized, AI‑generated horoscope based on your exact birth chart and today's planetary transits. It's like having a personal astrologer in your pocket.</p>
-                <p><strong>Why Bramha AI?</strong> We don't just use your sun sign – we calculate your entire birth chart and compare it with current transits. The AI interprets these in warm Hinglish, giving you a lucky number, lucky color, and practical advice.</p>
-                <p><strong>How to use:</strong> Enter your birth details below. Click "Get Horoscope".</p>
+                <p>Bramha AI's <strong>AI Panchang</strong> is the most detailed, accurate, and beautifully explained daily calendar. Powered by Swiss Ephemeris and advanced AI, it decodes cosmic influences for any date, time, and place.</p>
+                <p><strong>Why Bramha AI?</strong> We combine ancient Vedic wisdom with cutting‑edge AI. Our interpretation tells you <em>what</em> each element means, <em>how</em> it affects your day, <em>why</em> it matters, and <em>when</em> to act – all in warm Hinglish.</p>
+                <p><strong>How to use:</strong> Enter date, time, and location below. Click "Get AI Analysis".</p>
             </div>
-            <div class="card" id="horoscope">
+            <div class="card" id="panchang">
                 <h3>Enter Your Details</h3>
-                <input type="text" id="horoscope-name" placeholder="Your Name (optional)" value="Raj">
-                <input type="date" id="horoscope-dob" value="1996-07-04">
-                <input type="time" id="horoscope-time" value="09:10:00" step="1">
+                <input type="date" id="panchang-date" value="1996-07-04">
+                <input type="time" id="panchang-time" value="09:10:00" step="1">
 
                 <!-- Location input with autocomplete -->
                 <div class="location-wrapper">
@@ -1270,23 +1269,15 @@
                     <div id="suggestions"></div>
                 </div>
 
-                <!-- Gender dropdown -->
-                <select id="horoscope-gender" class="gender-select">
-                    <option value="">Select Gender (optional)</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                </select>
-
                 <!-- Hidden lat/lon/timezone fields -->
-                <input type="hidden" id="horoscope-lat" value="18.404">
-                <input type="hidden" id="horoscope-lon" value="75.195">
-                <input type="hidden" id="horoscope-tz" value="5.5">
+                <input type="hidden" id="panchang-lat" value="18.404">
+                <input type="hidden" id="panchang-lon" value="75.195">
+                <input type="hidden" id="panchang-tz" value="5.5">
 
-                <button class="button" id="get-horoscope">
-                    <div class="wrap"><p><span>✧</span><span>✦</span> Get Horoscope</p></div>
+                <button class="button" id="get-panchang">
+                    <div class="wrap"><p><span>✧</span><span>✦</span> Get AI Analysis</p></div>
                 </button>
-                <div id="horoscope-result" class="result-box">
+                <div id="panchang-result" class="result-box">
                     <!-- Progress bar container (hidden initially) -->
                     <div class="progress-bar-container" style="display: none;">
                         <div class="progress-bar-outer">
@@ -1299,7 +1290,7 @@
             </div>
         </section>
 
-        <!-- About Us Section (same as before) -->
+        <!-- About Us Section -->
         <section id="about">
             <h2 class="section-title">About Bramha AI</h2>
             <div class="about-text">
@@ -1375,7 +1366,7 @@
                 <h4>Services</h4>
                 <ul>
                     <li><a href="panchang.html">AI Panchang</a></li>
-                    <li><a href="daily.html">Daily Horoscope</a></li>
+                    <li><a href="horoscope.html">Daily Horoscope</a></li>
                     <li><a href="#">Kundali Analysis</a></li>
                     <li><a href="#">Matching</a></li>
                     <li><a href="#">Gemstone Recommendations</a></li>
@@ -1571,9 +1562,9 @@
         // ========== LOCATION AUTOCOMPLETE ==========
         const locationInput = document.getElementById('locationInput');
         const suggestionsDiv = document.getElementById('suggestions');
-        const latField = document.getElementById('horoscope-lat');
-        const lonField = document.getElementById('horoscope-lon');
-        const tzField = document.getElementById('horoscope-tz');
+        const latField = document.getElementById('panchang-lat');
+        const lonField = document.getElementById('panchang-lon');
+        const tzField = document.getElementById('panchang-tz');
 
         let debounceTimer;
         locationInput.addEventListener('input', function() {
@@ -1620,31 +1611,28 @@
             }
         });
 
-        // ========== API CALL FOR DAILY HOROSCOPE ==========
+        // ========== API CALL FOR AI PANCHANG ==========
         const API_BASE = 'https://codewander-666-bramha-ai.hf.space';
         let progressInterval = null;
 
-        document.getElementById('get-horoscope').addEventListener('click', async () => {
-            const resultBox = document.getElementById('horoscope-result');
+        document.getElementById('get-panchang').addEventListener('click', async () => {
+            const resultBox = document.getElementById('panchang-result');
             const progressContainer = resultBox.querySelector('.progress-bar-container');
             const progressFill = document.getElementById('analysis-progress');
             const progressPercentText = document.getElementById('analysis-percentage');
             const resultContent = resultBox.querySelector('.result-content');
 
-            // Cancel any previous progress interval
             if (progressInterval) {
                 clearInterval(progressInterval);
                 progressInterval = null;
             }
 
-            // Show progress bar, hide previous result
             progressContainer.style.display = 'block';
             resultContent.style.display = 'none';
             resultContent.innerHTML = '';
             progressFill.style.width = '0%';
             progressPercentText.innerText = '0%';
 
-            // Start progress simulation (3 minutes = 180 seconds)
             let elapsed = 0;
             const totalTime = 180;
             const incrementPerSecond = 100 / totalTime;
@@ -1660,13 +1648,10 @@
                 }
             }, 1000);
 
-            const dateStr = document.getElementById('horoscope-dob').value.split('-');
-            const timeStr = document.getElementById('horoscope-time').value.split(':');
-            const name = document.getElementById('horoscope-name').value;
-            const gender = document.getElementById('horoscope-gender').value || null;
+            const dateStr = document.getElementById('panchang-date').value.split('-');
+            const timeStr = document.getElementById('panchang-time').value.split(':');
 
             const payload = {
-                name: name,
                 year: parseInt(dateStr[0]),
                 month: parseInt(dateStr[1]),
                 day: parseInt(dateStr[2]),
@@ -1675,12 +1660,11 @@
                 second: timeStr[2] ? parseInt(timeStr[2]) : 0,
                 latitude: parseFloat(latField.value),
                 longitude: parseFloat(lonField.value),
-                timezone: parseFloat(tzField.value),
-                gender: gender
+                timezone: parseFloat(tzField.value)
             };
 
             try {
-                const response = await fetch(`${API_BASE}/horoscope/daily`, {
+                const response = await fetch(`${API_BASE}/panchanga/analysis`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -1699,14 +1683,8 @@
 
                 progressContainer.style.display = 'none';
                 resultContent.style.display = 'block';
-                // Format the result nicely
-                let output = `✨ ${data.name ? data.name + "'s" : 'Your'} Horoscope for ${data.target_date}\n\n`;
-                output += data.horoscope;
-                // Optionally include aspects if available
-                if (data.aspects && data.aspects.length > 0) {
-                    output += "\n\nNotable transits:\n" + data.aspects.join('\n');
-                }
-                resultContent.innerText = output;
+                let cleanAnalysis = data.analysis.replace(/[#*]/g, '');
+                resultContent.innerText = cleanAnalysis;
             } catch (err) {
                 clearInterval(progressInterval);
                 progressInterval = null;
